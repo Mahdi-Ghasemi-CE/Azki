@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azki", "Azki\Azki.csproj", "{5A8E7E3F-A405-4923-89AE-4825FDB3F55A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azki.Data", "Azki.Data\Azki.Data.csproj", "{D7A772A2-1EEA-4F79-A2D7-DDD18BA8049B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azki.Model", "Azki.Model\Azki.Model.csproj", "{2D2F4D52-F20C-46CE-8A06-D18AB3DD14C8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A8E7E3F-A405-4923-89AE-4825FDB3F55A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A8E7E3F-A405-4923-89AE-4825FDB3F55A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A8E7E3F-A405-4923-89AE-4825FDB3F55A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A8E7E3F-A405-4923-89AE-4825FDB3F55A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7A772A2-1EEA-4F79-A2D7-DDD18BA8049B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7A772A2-1EEA-4F79-A2D7-DDD18BA8049B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7A772A2-1EEA-4F79-A2D7-DDD18BA8049B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7A772A2-1EEA-4F79-A2D7-DDD18BA8049B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D2F4D52-F20C-46CE-8A06-D18AB3DD14C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D2F4D52-F20C-46CE-8A06-D18AB3DD14C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D2F4D52-F20C-46CE-8A06-D18AB3DD14C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D2F4D52-F20C-46CE-8A06-D18AB3DD14C8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F6D002CA-8C4B-49ED-BCEA-5416DFC8E471}
+	EndGlobalSection
+EndGlobal
