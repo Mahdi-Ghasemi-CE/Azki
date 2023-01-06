@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f7146d5b105744f38e2d09036fc44273" Name="Diagram1" ZoomLevel="40">
+      <Diagram DiagramId="f7146d5b105744f38e2d09036fc44273" Name="Diagram1" ZoomLevel="88">
         <EntityTypeShape EntityType="Azki_DBModel.Insurance" Width="1.5" PointX="3" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Azki_DBModel.InsuranceCompany" Width="1.5" PointX="0.75" PointY="10.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Azki_DBModel.LifeInsurance" Width="1.5" PointX="7.5" PointY="13" IsExpanded="true" />
@@ -32,6 +32,7 @@
         <AssociationConnector Association="Azki_DBModel.FK_Reminder_Users" ManuallyRouted="false" />
         <AssociationConnector Association="Azki_DBModel.FK_SicknessCoverage_SicknessCoverageTypes" ManuallyRouted="false" />
         <AssociationConnector Association="Azki_DBModel.FK_SicknessCoverage_SupplementaryHealthInsurance" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_SicknessCoverage_SicknessCoverageTypes1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

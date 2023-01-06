@@ -14,9 +14,17 @@ namespace Azki.Data
     
     public partial class SicknessCoverageType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public SicknessCoverageType()
+        {
+            this.SicknessCoverages = new HashSet<SicknessCoverage>();
+        }
+    
         public int SicknessCoverageTypesId { get; set; }
         public string Title { get; set; }
     
         public virtual SicknessCoverage SicknessCoverage { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SicknessCoverage> SicknessCoverages { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Azki.Data.Implements
 {
-    public class SupplementaryHealthInsuranceUserDAO:BaseRepository,Repository<SupplementaryHealthInsuranceUser,int>
+    public class SupplementaryHealthInsuranceUserDAO : BaseRepository, Repository<SupplementaryHealthInsuranceUser, int>
     {
         public bool deleteByID(int id)
         {
@@ -93,9 +93,20 @@ namespace Azki.Data.Implements
         {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"INSERT INTO [dbo].[SupplementaryHealthInsuranceUser]([AgeRange],[RelationshipWithSupervisor],[PaiedInsuranceId])" +
-                               $"VALUES(<{E.AgeRange}>,<{E.RelationshipWithSupervisor}>,<{E.PaiedInsuranceId}>)" +
-                               $"SELECT * from [dbo].[SupplementaryHealthInsuranceUser] where SupplementaryHealthInsuranceUserId = scope_identity()";
+            if (E.SupplementaryHealthInsuranceUserId == 0)
+            {
+                cmd.CommandText = $"INSERT INTO [dbo].[SupplementaryHealthInsuranceUser]([AgeRange],[RelationshipWithSupervisor],[PaiedInsuranceId])" +
+                                   $"VALUES({E.AgeRange},{E.RelationshipWithSupervisor},{E.PaiedInsuranceId})" +
+                                   $"SELECT * from [dbo].[SupplementaryHealthInsuranceUser] where SupplementaryHealthInsuranceUserId = scope_identity()";
+            }
+            else
+            {
+                cmd.CommandText = $"UPDATE [dbo].[SupplementaryHealthInsuranceUser]" +
+                    $"SET [AgeRange] = {E.AgeRange},[RelationshipWithSupervisor] = {E.RelationshipWithSupervisor}" +
+                    $",[PaiedInsuranceId] = {E.PaiedInsuranceId}" +
+                    $"WHERE SupplementaryHealthInsuranceUserId = {E.SupplementaryHealthInsuranceUserId}" +
+                                    $"SELECT * from [dbo].[SupplementaryHealthInsuranceUser] where SupplementaryHealthInsuranceUserId = scope_identity()";
+            }
             cmd.Connection = Connection;
             Connection.Open();
             var res = cmd.ExecuteScalar();

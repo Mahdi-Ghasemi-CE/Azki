@@ -93,11 +93,27 @@ namespace Azki.Data.Implements
         {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
+            if (E.UserId == 0)
+            {
+
             cmd.CommandText = $"INSERT INTO [dbo].[Users]([Name],[Family],[UserName],[Password],[NationalCode]," +
                               $"[CreateDate],[InvitationCode],[InvitationCodeUsageNumber])" +
-                               $"VALUES(<{E.Name}>,<{E.Family}>,<{E.UserName}>,<{E.Password}>,<{E.NationalCode}>," +
-                               $"<{E.CreateDate}>,<{E.InvitationCode}>,<{E.InvitationCodeUsageNumber})" +
+                               $"VALUES({E.Name},{E.Family},{E.UserName},{E.Password},{E.NationalCode}," +
+                               $"{E.CreateDate},{E.InvitationCode},{E.InvitationCodeUsageNumber})" +
                                $"SELECT * from [dbo].[User] where UserId = scope_identity()";
+            }
+            else
+            {
+                    
+            cmd.CommandText = $"UPDATE [dbo].[Users]" +
+                    $"SET [Name] = {E.Name},[Family] = {E.Family}" +
+                    $",[UserName] = {E.UserName},[Password] = {E.Password}" +
+                    $",[NationalCode] = {E.NationalCode},[CreateDate] = {E.CreateDate}" +
+                    $",[InvitationCode] = {E.InvitationCode}" +
+                    $",[InvitationCodeUsageNumber] = {E.InvitationCodeUsageNumber}" +
+                    $"WHERE UserId = {E.UserId}" +
+                               $"SELECT * from [dbo].[User] where UserId = scope_identity()";
+            }
             cmd.Connection = Connection;
             Connection.Open();
             var res = cmd.ExecuteScalar();

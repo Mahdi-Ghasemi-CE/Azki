@@ -21,5 +21,6 @@ namespace Azki.Data
     
         public virtual SicknessCoverageType SicknessCoverageType { get; set; }
         public virtual SupplementaryHealthInsurance SupplementaryHealthInsurance { get; set; }
+        public virtual SicknessCoverageType SicknessCoverageType1 { get; set; }
     }
 }

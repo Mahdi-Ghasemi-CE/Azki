@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Azki.Data.Implements
 {
-    public class ReminderDAO:BaseRepository,Repository<Reminder,int>
+    public class ReminderDAO : BaseRepository, Repository<Reminder, int>
     {
         public bool deleteByID(int id)
         {
@@ -93,9 +93,20 @@ namespace Azki.Data.Implements
         {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"INSERT INTO [dbo].[Reminder]([UserId],[InsuranceId],[Date])" +
-                               $"VALUES (<{E.UserId}>,<{E.InsuranceId}>,<{E.Date}>)" +
-                               $"SELECT * from [dbo].[Reminder] where ReminderId = scope_identity()";
+            if (E.ReminderId == 0)
+            {
+                cmd.CommandText = $"INSERT INTO [dbo].[Reminder]([UserId],[InsuranceId],[Date])" +
+                                   $"VALUES ({E.UserId},{E.InsuranceId},{E.Date})" +
+                                   $"SELECT * from [dbo].[Reminder] where ReminderId = scope_identity()";
+            }
+            else
+            {
+                cmd.CommandText = $"UPDATE [dbo].[Reminder]" +
+                                    $"SET [UserId] = {E.UserId},[InsuranceId] = {E.InsuranceId}" +
+                                    $",[Date] = {E.Date}" +
+                                    $"WHERE ReminderId = {E.ReminderId}" +
+                                   $"SELECT * from [dbo].[Reminder] where ReminderId = scope_identity()";
+            }
             cmd.Connection = Connection;
             Connection.Open();
             var res = cmd.ExecuteScalar();

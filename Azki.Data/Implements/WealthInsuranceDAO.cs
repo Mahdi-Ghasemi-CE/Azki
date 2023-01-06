@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Azki.Data.Implements
 {
-    public class WealthInsuranceDAO:BaseRepository,Repository<WealthInsurance,int>
+    public class WealthInsuranceDAO : BaseRepository, Repository<WealthInsurance, int>
     {
         public bool deleteByID(int id)
         {
@@ -93,11 +93,27 @@ namespace Azki.Data.Implements
         {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"INSERT INTO [dbo].[WealthInsurance]([InsuranceId],[WealthValue],[ProvinceName]," +
-                $"[CityName],[WealthInsuranceTypeId],[Meterage],[BuildingAge],[RoofNumbers],[WealthTypeId],[ValuePerMeter])" +
-                               $"VALUES(<{E.InsuranceId}>,<{E.WealthValue}>,<{E.ProvinceName}>" +
-                               $",<{E.CityName}>,<{E.WealthInsuranceTypeId}>,<{E.Meterage}>,<{E.BuildingAge}>,<{E.RoofNumbers}>,<{E.WealthTypeId}>,<{E.ValuePerMeter}>)" +
-                               $"SELECT * from [dbo].[WealthInsurance] where WealthInsuranceId = scope_identity()";
+
+            if (E.WealthInsuranceId == 0)
+            {
+                cmd.CommandText = $"INSERT INTO [dbo].[WealthInsurance]([InsuranceId],[WealthValue],[ProvinceName]," +
+                    $"[CityName],[WealthInsuranceTypeId],[Meterage],[BuildingAge],[RoofNumbers],[WealthTypeId],[ValuePerMeter])" +
+                                   $"VALUES({E.InsuranceId},{E.WealthValue},{E.ProvinceName}" +
+                                   $",{E.CityName},{E.WealthInsuranceTypeId},{E.Meterage},{E.BuildingAge},{E.RoofNumbers},{E.WealthTypeId},{E.ValuePerMeter})" +
+                                   $"SELECT * from [dbo].[WealthInsurance] where WealthInsuranceId = scope_identity()";
+            }
+            else
+            {
+                cmd.CommandText = $"UPDATE [dbo].[WealthInsurance]" +
+                    $"SET [InsuranceId] = {E.InsuranceId},[WealthValue] = {E.WealthValue}," +
+                    $"[ProvinceName] = {E.ProvinceName},[CityName] = {E.CityName}," +
+                    $"[WealthInsuranceTypeId] = {E.WealthInsuranceTypeId}," +
+                    $"[Meterage] = {E.Meterage},[BuildingAge] = {E.BuildingAge}," +
+                    $"[RoofNumbers] = {E.RoofNumbers},[WealthTypeId] = {E.WealthTypeId}," +
+                    $"[ValuePerMeter] = {E.ValuePerMeter}" +
+                    $"WHERE WealthInsuranceId = {E.WealthInsuranceId}" +
+                                   $"SELECT * from [dbo].[WealthInsurance] where WealthInsuranceId = scope_identity()";
+            }
             cmd.Connection = Connection;
             Connection.Open();
             var res = cmd.ExecuteScalar();

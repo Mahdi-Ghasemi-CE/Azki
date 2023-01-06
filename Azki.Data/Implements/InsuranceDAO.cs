@@ -94,9 +94,19 @@ namespace Azki.Data.Implements
         {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"INSERT INTO [dbo].[Insurance]([OfferName],[ContractTime],[Price],[InsuranceCompanyId],[DiscountPercent])" +
-                               $"VALUES(<{E.OfferName}>,<{E.ContractTime}>,<{E.Price}>,<{E.InsuranceCompanyId}>,<{E.DiscountPercent}>)" +
+            if (E.InsuranceCompanyId == 0)
+            {
+                cmd.CommandText = $"INSERT INTO [dbo].[Insurance]([OfferName],[ContractTime],[Price],[InsuranceCompanyId],[DiscountPercent])" +
+                               $"VALUES({E.OfferName},{E.ContractTime},{E.Price},{E.InsuranceCompanyId},{E.DiscountPercent})" +
                                $"SELECT * from [dbo].[Insurance] where InsuranceId = scope_identity()";
+            }
+            else
+            {
+                cmd.CommandText = $"UPDATE [dbo].[Insurance]" +
+                                    $"SET [OfferName] = {E.OfferName} ,[ContractTime] = {E.ContractTime},[Price] = {E.Price},[InsuranceCompanyId] = {E.InsuranceCompanyId},[DiscountPercent] = {E.DiscountPercent}" +
+                                    $"WHERE InsuranceId = {E.InsuranceId}" +
+                                $"SELECT * from [dbo].[Insurance] where InsuranceId = scope_identity()";
+            }
             cmd.Connection = Connection;
             Connection.Open();
             var res = cmd.ExecuteScalar();

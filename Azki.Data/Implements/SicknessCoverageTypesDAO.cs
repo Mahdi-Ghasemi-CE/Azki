@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Azki.Data.Implements
 {
-    public class SicknessCoverageTypesDAO:BaseRepository,Repository<SicknessCoverageType,int>
+    public class SicknessCoverageTypesDAO : BaseRepository, Repository<SicknessCoverageType, int>
     {
         public bool deleteByID(int id)
         {
@@ -93,9 +93,19 @@ namespace Azki.Data.Implements
         {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"INSERT INTO [dbo].[SicknessCoverageTypes]([Title])" +
-                               $"VALUES (<{E.Title}>)" +
-                               $"SELECT * from [dbo].[SicknessCoverageType] where SicknessCoverageTypeId = scope_identity()";
+            if (true)
+            {
+                cmd.CommandText = $"INSERT INTO [dbo].[SicknessCoverageTypes]([Title])" +
+                                   $"VALUES ({E.Title})" +
+                                   $"SELECT * from [dbo].[SicknessCoverageType] where SicknessCoverageTypeId = scope_identity()";
+            }
+            else
+            {
+                cmd.CommandText = $"UPDATE [dbo].[SicknessCoverageTypes]" +
+                                    $"SET [Title] = {E.Title}" +
+                                    $"WHERE SicknessCoverageTypesId = {E.SicknessCoverageTypesId}" +
+                                   $"SELECT * from [dbo].[SicknessCoverageType] where SicknessCoverageTypeId = scope_identity()";
+            }
             cmd.Connection = Connection;
             Connection.Open();
             var res = cmd.ExecuteScalar();

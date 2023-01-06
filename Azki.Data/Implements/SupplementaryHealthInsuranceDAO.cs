@@ -94,9 +94,20 @@ namespace Azki.Data.Implements
         {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"INSERT INTO [dbo].[SupplementaryHealthInsurance]([TypeId],[PersonalInsuranceId])" +
-                               $"VALUES (<{E.TypeId}>,<{E.PersonalInsuranceId}>)" +
+            if (E.SupplementaryHealthInsuranceId ==0)
+            {
+                cmd.CommandText = $"INSERT INTO [dbo].[SupplementaryHealthInsurance]([TypeId],[PersonalInsuranceId],[BaseInsuranceId])" +
+                               $"VALUES ({E.TypeId},{E.PersonalInsuranceId}و{E.BaseInsuranceId})" +
                                $"SELECT * from [dbo].[SupplementaryHealthInsurance] where SupplementaryHealthInsuranceId = scope_identity()";
+            }
+            else
+            {
+                cmd.CommandText = $"UPDATE [dbo].[SupplementaryHealthInsurance]" +
+                                  $"SET [TypeId] = {E.TypeId},[PersonalInsuranceId] = {E.PersonalInsuranceId},[BaseInsuranceId] = {E.BaseInsuranceId} " +
+                                  $"WHERE SupplementaryHealthInsuranceId = {E.SupplementaryHealthInsuranceId}" +
+                               $"SELECT * from [dbo].[SupplementaryHealthInsurance] where SupplementaryHealthInsuranceId = scope_identity()";
+
+            }
             cmd.Connection = Connection;
             Connection.Open();
             var res = cmd.ExecuteScalar();

@@ -93,9 +93,26 @@ namespace Azki.Data.Implements
         {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"INSERT INTO [dbo].[LifeInsurance]([RedemptionValue],[AbilityToPay],[MedicalExpenses],[DeathCapital],[PersonalInsuranceId])" +
-                               $"VALUES (<{E.RedemptionValue}>,<{E.AbilityToPay}>,<{E.MedicalExpenses}>,<{E.DeathCapital}>,<{E.PersonalInsuranceId}>)" +
-                               $"SELECT * from [dbo].[LifeInsurance] where LifeInsuranceId = scope_identity()";
+            if (E.LifeInsuranceId == 0)
+            {
+
+                cmd.CommandText = $"INSERT INTO [dbo].[LifeInsurance]([RedemptionValue],[AbilityToPay],[MedicalExpenses],[DeathCapital],[PersonalInsuranceId])" +
+                                   $"VALUES (<{E.RedemptionValue}>,<{E.AbilityToPay}>,<{E.MedicalExpenses}>,<{E.DeathCapital}>,<{E.PersonalInsuranceId}>)" +
+                                   $"SELECT * from [dbo].[LifeInsurance] where LifeInsuranceId = scope_identity()";
+            }
+            else
+            {
+                cmd.CommandText = $"UPDATE [dbo].[LifeInsurance]" +
+                                   $"SET [RedemptionValue] = {E.RedemptionValue}," +
+                                   $"[AbilityToPay] = {E.AbilityToPay}," +
+                                   $"[MedicalExpenses] = {E.MedicalExpenses}" +
+                                   $",[DeathCapital] = {E.DeathCapital}" +
+                                   $",[PersonalInsuranceId] = {E.PersonalInsuranceId}" +
+                                   $"WHERE LifeInsuranceId = {E.LifeInsuranceId}" +
+                                     $"SELECT * from [dbo].[LifeInsurance] where LifeInsuranceId = scope_identity()";
+
+            }
+
             cmd.Connection = Connection;
             Connection.Open();
             var res = cmd.ExecuteScalar();

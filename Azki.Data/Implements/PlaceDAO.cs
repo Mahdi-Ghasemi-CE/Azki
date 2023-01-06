@@ -93,9 +93,21 @@ namespace Azki.Data.Implements
         {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
+            if (E.PlaceId == 0)
+            {
             cmd.CommandText = $"INSERT INTO [dbo].[Place]([Address],[PostalCode],[Roof],[Phone],[Plate],[Unit],[PaiedInsuranceId])" +
-                               $"VALUES(<{E.Address}>,<{E.PostalCode}>,<{E.Roof}>,<{E.Phone}>,<{E.Plate}>,<{E.Unit}>,<{E.PaiedInsuranceId}>)" +
+                               $"VALUES({E.Address},{E.PostalCode},{E.Roof},{E.Phone},{E.Plate},{E.Unit},{E.PaiedInsuranceId})" +
                                $"SELECT * from [dbo].[Place] where PlaceId = scope_identity()";
+            }
+            else
+            {
+            cmd.CommandText = $"UPDATE [dbo].[Place]" +
+                    $" SET [Address] = {E.Address},[PostalCode] = {E.PostalCode}" +
+                    $",[Roof] = {E.Roof},[Phone] = {E.Phone},[Plate] = {E.Plate}" +
+                    $",[Unit] = {E.Unit},[PaiedInsuranceId] = {E.PaiedInsuranceId}" +
+                    $"WHERE PlaceId = {E.PlaceId}" +
+                               $"SELECT * from [dbo].[Place] where PlaceId = scope_identity()";
+            }
             cmd.Connection = Connection;
             Connection.Open();
             var res = cmd.ExecuteScalar();

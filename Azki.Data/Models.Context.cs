@@ -51,26 +51,26 @@ namespace Azki.Data
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spNameCompanyAsc_Result>("spNameCompanyAsc", provinceParameter);
         }
     
-        public virtual ObjectResult<spTwoInsurances_Result> spTwoInsurances(Nullable<int> insuranceType1, Nullable<int> insuranceType2)
+        public virtual ObjectResult<spTwoInsurances_Result> spTwoInsurances(Nullable<int> fist_insurance, Nullable<int> second_insurance)
         {
-            var insuranceType1Parameter = insuranceType1.HasValue ?
-                new ObjectParameter("InsuranceType1", insuranceType1) :
-                new ObjectParameter("InsuranceType1", typeof(int));
+            var fist_insuranceParameter = fist_insurance.HasValue ?
+                new ObjectParameter("fist_insurance", fist_insurance) :
+                new ObjectParameter("fist_insurance", typeof(int));
     
-            var insuranceType2Parameter = insuranceType2.HasValue ?
-                new ObjectParameter("InsuranceType2", insuranceType2) :
-                new ObjectParameter("InsuranceType2", typeof(int));
+            var second_insuranceParameter = second_insurance.HasValue ?
+                new ObjectParameter("second_insurance", second_insurance) :
+                new ObjectParameter("second_insurance", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spTwoInsurances_Result>("spTwoInsurances", insuranceType1Parameter, insuranceType2Parameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spTwoInsurances_Result>("spTwoInsurances", fist_insuranceParameter, second_insuranceParameter);
         }
     
-        public virtual int spUpdateInsurance(Nullable<int> paymentPeriodType)
+        public virtual int spUpdateInsurance(Nullable<int> year_Contract)
         {
-            var paymentPeriodTypeParameter = paymentPeriodType.HasValue ?
-                new ObjectParameter("PaymentPeriodType", paymentPeriodType) :
-                new ObjectParameter("PaymentPeriodType", typeof(int));
+            var year_ContractParameter = year_Contract.HasValue ?
+                new ObjectParameter("year_Contract", year_Contract) :
+                new ObjectParameter("year_Contract", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateInsurance", paymentPeriodTypeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateInsurance", year_ContractParameter);
         }
     
         public virtual ObjectResult<spuserCompanyInsurance_Result> spuserCompanyInsurance(string insuranceCompanyName, string insuranceName)

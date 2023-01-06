@@ -94,9 +94,21 @@ namespace Azki.Data.Implements
         {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"INSERT INTO [dbo].[SicknessCoverage]([SicknessCoverageTypesId],[Price],[SupplementaryHealthInsuranceId])" +
-                               $"VALUES (<{E.SicknessCoverageTypesId}>,<{E.Price}>,<{E.SupplementaryHealthInsuranceId}>)" +
-                               $"SELECT * from [dbo].[SicknessCoverage] where SicknessCoverageId = scope_identity()";
+            if (E.SicknessCoverageId == 0)
+            {
+                cmd.CommandText = $"INSERT INTO [dbo].[SicknessCoverage]([SicknessCoverageTypesId],[Price],[SupplementaryHealthInsuranceId])" +
+                                   $"VALUES ({E.SicknessCoverageTypesId},{E.Price},{E.SupplementaryHealthInsuranceId})" +
+                                   $"SELECT * from [dbo].[SicknessCoverage] where SicknessCoverageId = scope_identity()";
+
+            }
+            else
+            {
+                cmd.CommandText = $"UPDATE [dbo].[SicknessCoverage]" +
+                    $"SET [SicknessCoverageTypesId] = {E.SicknessCoverageTypesId},[Price] = {E.Price},[SupplementaryHealthInsuranceId] = {E.SupplementaryHealthInsuranceId}" +
+                    $"WHERE SicknessCoverageId = {E.SicknessCoverageId}" +
+                                   $"SELECT * from [dbo].[SicknessCoverage] where SicknessCoverageId = scope_identity()";
+
+            }
             cmd.Connection = Connection;
             Connection.Open();
             var res = cmd.ExecuteScalar();

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Azki_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Azki_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Insurance">
           <Key>
             <PropertyRef Name="InsuranceId" />
@@ -98,6 +98,7 @@
           <Property Name="SupplementaryHealthInsuranceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TypeId" Type="int" Nullable="false" />
           <Property Name="PersonalInsuranceId" Type="int" Nullable="false" />
+          <Property Name="BaseInsuranceId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SupplementaryHealthInsuranceUser">
           <Key>
@@ -246,13 +247,13 @@
         </Association>
         <Association Name="FK_SicknessCoverage_SicknessCoverageTypes">
           <End Role="SicknessCoverageTypes" Type="Self.SicknessCoverageTypes" Multiplicity="1" />
-          <End Role="SicknessCoverage" Type="Self.SicknessCoverage" Multiplicity="0..1" />
+          <End Role="SicknessCoverage" Type="Self.SicknessCoverage" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SicknessCoverageTypes">
               <PropertyRef Name="SicknessCoverageTypesId" />
             </Principal>
             <Dependent Role="SicknessCoverage">
-              <PropertyRef Name="SicknessCoverageId" />
+              <PropertyRef Name="SicknessCoverageTypesId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -308,11 +309,11 @@
           <Parameter Name="Province" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="spTwoInsurances" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="InsuranceType1" Type="int" Mode="In" />
-          <Parameter Name="InsuranceType2" Type="int" Mode="In" />
+          <Parameter Name="fist_insurance" Type="int" Mode="In" />
+          <Parameter Name="second_insurance" Type="int" Mode="In" />
         </Function>
         <Function Name="spUpdateInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="PaymentPeriodType" Type="int" Mode="In" />
+          <Parameter Name="year_Contract" Type="int" Mode="In" />
         </Function>
         <Function Name="spuserCompanyInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="InsuranceCompanyName" Type="nvarchar" Mode="In" />
@@ -397,8 +398,7 @@
             <End Role="WealthInsurance" EntitySet="WealthInsurance" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Azki_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -499,6 +499,7 @@
           <Property Name="SupplementaryHealthInsuranceId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="SicknessCoverageType" Relationship="Self.FK_SicknessCoverage_SicknessCoverageTypes" FromRole="SicknessCoverage" ToRole="SicknessCoverageTypes" />
           <NavigationProperty Name="SupplementaryHealthInsurance" Relationship="Self.FK_SicknessCoverage_SupplementaryHealthInsurance" FromRole="SicknessCoverage" ToRole="SupplementaryHealthInsurance" />
+          <NavigationProperty Name="SicknessCoverageType1" Relationship="Azki_DBModel.FK_SicknessCoverage_SicknessCoverageTypes1" FromRole="SicknessCoverage" ToRole="SicknessCoverageType" />
         </EntityType>
         <EntityType Name="SicknessCoverageType">
           <Key>
@@ -507,6 +508,7 @@
           <Property Name="SicknessCoverageTypesId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
           <NavigationProperty Name="SicknessCoverage" Relationship="Self.FK_SicknessCoverage_SicknessCoverageTypes" FromRole="SicknessCoverageTypes" ToRole="SicknessCoverage" />
+          <NavigationProperty Name="SicknessCoverages" Relationship="Azki_DBModel.FK_SicknessCoverage_SicknessCoverageTypes1" FromRole="SicknessCoverageType" ToRole="SicknessCoverage" />
         </EntityType>
         <EntityType Name="SupplementaryHealthInsurance">
           <Key>
@@ -517,6 +519,7 @@
           <Property Name="PersonalInsuranceId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PersonalInsurance" Relationship="Self.FK_SupplementaryHealthInsurance_PersonalInsurance" FromRole="SupplementaryHealthInsurance" ToRole="PersonalInsurance" />
           <NavigationProperty Name="SicknessCoverages" Relationship="Self.FK_SicknessCoverage_SupplementaryHealthInsurance" FromRole="SupplementaryHealthInsurance" ToRole="SicknessCoverage" />
+          <Property Name="BaseInsuranceId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="SupplementaryHealthInsuranceUser">
           <Key>
@@ -795,14 +798,14 @@
             <End Role="SicknessCoverage" EntitySet="SicknessCoverages" />
           </AssociationSet>
           <FunctionImport Name="spNameCompanyAsc" ReturnType="Collection(Azki_DBModel.spNameCompanyAsc_Result)">
-            <Parameter Name="Province" Mode="In" Type="String" />
+          <Parameter Name="Province" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spTwoInsurances" ReturnType="Collection(Azki_DBModel.spTwoInsurances_Result)">
-            <Parameter Name="InsuranceType1" Mode="In" Type="Int32" />
-            <Parameter Name="InsuranceType2" Mode="In" Type="Int32" />
+            <Parameter Name="fist_insurance" Mode="In" Type="Int32" />
+            <Parameter Name="second_insurance" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spUpdateInsurance">
-            <Parameter Name="PaymentPeriodType" Mode="In" Type="Int32" />
+          <Parameter Name="year_Contract" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spuserCompanyInsurance" ReturnType="Collection(Azki_DBModel.spuserCompanyInsurance_Result)">
             <Parameter Name="InsuranceCompanyName" Mode="In" Type="String" />
@@ -813,12 +816,16 @@
             <Parameter Name="PaidInsuranceNumber" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spUserMaxInsurance" ReturnType="Collection(Azki_DBModel.spUserMaxInsurance_Result)">
-            <Parameter Name="Price" Mode="In" Type="Int64" />
+          <Parameter Name="Price" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spUserNotOrder" ReturnType="Collection(String)" />
           <FunctionImport Name="spUserReminder" ReturnType="Collection(String)">
-            <Parameter Name="PaymentPeriodType" Mode="In" Type="Int32" />
+          <Parameter Name="PaymentPeriodType" Mode="In" Type="Int32" />
           </FunctionImport>
+          <AssociationSet Name="FK_SicknessCoverage_SicknessCoverageTypes1" Association="Azki_DBModel.FK_SicknessCoverage_SicknessCoverageTypes1">
+            <End Role="SicknessCoverageType" EntitySet="SicknessCoverageTypes" />
+            <End Role="SicknessCoverage" EntitySet="SicknessCoverages" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="spNameCompanyAsc_Result">
           <Property Type="Int32" Name="WealthInsuranceId" Nullable="false" />
@@ -858,6 +865,18 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Family" Nullable="false" MaxLength="100" />
         </ComplexType>
+        <Association Name="FK_SicknessCoverage_SicknessCoverageTypes1">
+          <End Type="Azki_DBModel.SicknessCoverageType" Role="SicknessCoverageType" Multiplicity="1" />
+          <End Type="Azki_DBModel.SicknessCoverage" Role="SicknessCoverage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SicknessCoverageType">
+              <PropertyRef Name="SicknessCoverageTypesId" />
+            </Principal>
+            <Dependent Role="SicknessCoverage">
+              <PropertyRef Name="SicknessCoverageTypesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -962,6 +981,7 @@
           <EntitySetMapping Name="SupplementaryHealthInsurances">
             <EntityTypeMapping TypeName="Azki_DBModel.SupplementaryHealthInsurance">
               <MappingFragment StoreEntitySet="SupplementaryHealthInsurance">
+                <ScalarProperty Name="BaseInsuranceId" ColumnName="BaseInsuranceId" />
                 <ScalarProperty Name="SupplementaryHealthInsuranceId" ColumnName="SupplementaryHealthInsuranceId" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="PersonalInsuranceId" ColumnName="PersonalInsuranceId" />
