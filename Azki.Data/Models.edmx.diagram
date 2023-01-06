@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f7146d5b105744f38e2d09036fc44273" Name="Diagram1" ZoomLevel="40">
+        <EntityTypeShape EntityType="Azki_DBModel.Insurance" Width="1.5" PointX="3" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.InsuranceCompany" Width="1.5" PointX="0.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.LifeInsurance" Width="1.5" PointX="7.5" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.PaiedInsurance" Width="1.5" PointX="5.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.PersonalInsurance" Width="1.5" PointX="5.25" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.Place" Width="1.5" PointX="7.5" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.Reminder" Width="1.5" PointX="8.25" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.SicknessCoverage" Width="1.5" PointX="9.75" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.SicknessCoverageType" Width="1.5" PointX="7.5" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.SupplementaryHealthInsurance" Width="1.5" PointX="7.5" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.SupplementaryHealthInsuranceUser" Width="1.5" PointX="7.5" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.sysdiagram" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.User" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Azki_DBModel.WealthInsurance" Width="1.5" PointX="5.25" PointY="21.75" IsExpanded="true" />
+        <AssociationConnector Association="Azki_DBModel.FK_Insurance_InsuranceCompany" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_PaiedInsurance_Insurance" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_PersonalInsurance_Insurance" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_Reminder_Insurance" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_WealthInsurance_InsuranceId" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_LifeInsurance_PersonalInsurance" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_PaiedInsurance_User" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_Place_PaiedInsurance" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_SupplementaryHealthInsuranceUser_PaiedInsurance" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_SupplementaryHealthInsurance_PersonalInsurance" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_Reminder_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_SicknessCoverage_SicknessCoverageTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="Azki_DBModel.FK_SicknessCoverage_SupplementaryHealthInsurance" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

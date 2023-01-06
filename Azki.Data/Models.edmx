@@ -1,0 +1,1105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Azki_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Insurance">
+          <Key>
+            <PropertyRef Name="InsuranceId" />
+          </Key>
+          <Property Name="InsuranceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OfferName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ContractTime" Type="int" Nullable="false" />
+          <Property Name="Price" Type="bigint" Nullable="false" />
+          <Property Name="InsuranceCompanyId" Type="int" Nullable="false" />
+          <Property Name="DiscountPercent" Type="int" />
+        </EntityType>
+        <EntityType Name="InsuranceCompany">
+          <Key>
+            <PropertyRef Name="InsuranceCompanyId" />
+          </Key>
+          <Property Name="InsuranceCompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="120" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LifeInsurance">
+          <Key>
+            <PropertyRef Name="LifeInsuranceId" />
+          </Key>
+          <Property Name="LifeInsuranceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RedemptionValue" Type="bigint" Nullable="false" />
+          <Property Name="AbilityToPay" Type="bigint" Nullable="false" />
+          <Property Name="MedicalExpenses" Type="bigint" Nullable="false" />
+          <Property Name="DeathCapital" Type="bigint" Nullable="false" />
+          <Property Name="PersonalInsuranceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaiedInsurance">
+          <Key>
+            <PropertyRef Name="PaiedInsuranceId" />
+          </Key>
+          <Property Name="PaiedInsuranceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InsuranceType" Type="int" Nullable="false" />
+          <Property Name="InsuranceId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Point" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersonalInsurance">
+          <Key>
+            <PropertyRef Name="PersonalInsuranceId" />
+          </Key>
+          <Property Name="PersonalInsuranceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IncreasePercent" Type="int" Nullable="false" />
+          <Property Name="PaymentPeriodType" Type="int" Nullable="false" />
+          <Property Name="InsuranceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Place">
+          <Key>
+            <PropertyRef Name="PlaceId" />
+          </Key>
+          <Property Name="PlaceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PostalCode" Type="int" Nullable="false" />
+          <Property Name="Roof" Type="int" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Plate" Type="int" Nullable="false" />
+          <Property Name="Unit" Type="int" Nullable="false" />
+          <Property Name="PaiedInsuranceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reminder">
+          <Key>
+            <PropertyRef Name="ReminderId" />
+          </Key>
+          <Property Name="ReminderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="InsuranceId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SicknessCoverage">
+          <Key>
+            <PropertyRef Name="SicknessCoverageId" />
+          </Key>
+          <Property Name="SicknessCoverageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SicknessCoverageTypesId" Type="int" Nullable="false" />
+          <Property Name="Price" Type="bigint" Nullable="false" />
+          <Property Name="SupplementaryHealthInsuranceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SicknessCoverageTypes">
+          <Key>
+            <PropertyRef Name="SicknessCoverageTypesId" />
+          </Key>
+          <Property Name="SicknessCoverageTypesId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SupplementaryHealthInsurance">
+          <Key>
+            <PropertyRef Name="SupplementaryHealthInsuranceId" />
+          </Key>
+          <Property Name="SupplementaryHealthInsuranceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="PersonalInsuranceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SupplementaryHealthInsuranceUser">
+          <Key>
+            <PropertyRef Name="SupplementaryHealthInsuranceUserId" />
+          </Key>
+          <Property Name="SupplementaryHealthInsuranceUserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AgeRange" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RelationshipWithSupervisor" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PaiedInsuranceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Family" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="90" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="90" Nullable="false" />
+          <Property Name="NationalCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="InvitationCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="InvitationCodeUsageNumber" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WealthInsurance">
+          <Key>
+            <PropertyRef Name="WealthInsuranceId" />
+          </Key>
+          <Property Name="WealthInsuranceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InsuranceId" Type="int" Nullable="false" />
+          <Property Name="WealthValue" Type="bigint" Nullable="false" />
+          <Property Name="ProvinceName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CityName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="WealthInsuranceTypeId" Type="int" Nullable="false" />
+          <Property Name="Meterage" Type="int" Nullable="false" />
+          <Property Name="BuildingAge" Type="int" Nullable="false" />
+          <Property Name="RoofNumbers" Type="int" />
+          <Property Name="WealthTypeId" Type="int" Nullable="false" />
+          <Property Name="ValuePerMeter" Type="bigint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Insurance_InsuranceCompany">
+          <End Role="InsuranceCompany" Type="Self.InsuranceCompany" Multiplicity="1" />
+          <End Role="Insurance" Type="Self.Insurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InsuranceCompany">
+              <PropertyRef Name="InsuranceCompanyId" />
+            </Principal>
+            <Dependent Role="Insurance">
+              <PropertyRef Name="InsuranceCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LifeInsurance_PersonalInsurance">
+          <End Role="PersonalInsurance" Type="Self.PersonalInsurance" Multiplicity="1" />
+          <End Role="LifeInsurance" Type="Self.LifeInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalInsurance">
+              <PropertyRef Name="PersonalInsuranceId" />
+            </Principal>
+            <Dependent Role="LifeInsurance">
+              <PropertyRef Name="PersonalInsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaiedInsurance_Insurance">
+          <End Role="Insurance" Type="Self.Insurance" Multiplicity="1" />
+          <End Role="PaiedInsurance" Type="Self.PaiedInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Insurance">
+              <PropertyRef Name="InsuranceId" />
+            </Principal>
+            <Dependent Role="PaiedInsurance">
+              <PropertyRef Name="InsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaiedInsurance_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="PaiedInsurance" Type="Self.PaiedInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="PaiedInsurance">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonalInsurance_Insurance">
+          <End Role="Insurance" Type="Self.Insurance" Multiplicity="1" />
+          <End Role="PersonalInsurance" Type="Self.PersonalInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Insurance">
+              <PropertyRef Name="InsuranceId" />
+            </Principal>
+            <Dependent Role="PersonalInsurance">
+              <PropertyRef Name="InsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Place_PaiedInsurance">
+          <End Role="PaiedInsurance" Type="Self.PaiedInsurance" Multiplicity="1" />
+          <End Role="Place" Type="Self.Place" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaiedInsurance">
+              <PropertyRef Name="PaiedInsuranceId" />
+            </Principal>
+            <Dependent Role="Place">
+              <PropertyRef Name="PaiedInsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reminder_Insurance">
+          <End Role="Insurance" Type="Self.Insurance" Multiplicity="1" />
+          <End Role="Reminder" Type="Self.Reminder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Insurance">
+              <PropertyRef Name="InsuranceId" />
+            </Principal>
+            <Dependent Role="Reminder">
+              <PropertyRef Name="InsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reminder_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Reminder" Type="Self.Reminder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Reminder">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SicknessCoverage_SicknessCoverageTypes">
+          <End Role="SicknessCoverageTypes" Type="Self.SicknessCoverageTypes" Multiplicity="1" />
+          <End Role="SicknessCoverage" Type="Self.SicknessCoverage" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="SicknessCoverageTypes">
+              <PropertyRef Name="SicknessCoverageTypesId" />
+            </Principal>
+            <Dependent Role="SicknessCoverage">
+              <PropertyRef Name="SicknessCoverageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SicknessCoverage_SupplementaryHealthInsurance">
+          <End Role="SupplementaryHealthInsurance" Type="Self.SupplementaryHealthInsurance" Multiplicity="1" />
+          <End Role="SicknessCoverage" Type="Self.SicknessCoverage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SupplementaryHealthInsurance">
+              <PropertyRef Name="SupplementaryHealthInsuranceId" />
+            </Principal>
+            <Dependent Role="SicknessCoverage">
+              <PropertyRef Name="SupplementaryHealthInsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupplementaryHealthInsurance_PersonalInsurance">
+          <End Role="PersonalInsurance" Type="Self.PersonalInsurance" Multiplicity="1" />
+          <End Role="SupplementaryHealthInsurance" Type="Self.SupplementaryHealthInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalInsurance">
+              <PropertyRef Name="PersonalInsuranceId" />
+            </Principal>
+            <Dependent Role="SupplementaryHealthInsurance">
+              <PropertyRef Name="PersonalInsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupplementaryHealthInsuranceUser_PaiedInsurance">
+          <End Role="PaiedInsurance" Type="Self.PaiedInsurance" Multiplicity="1" />
+          <End Role="SupplementaryHealthInsuranceUser" Type="Self.SupplementaryHealthInsuranceUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaiedInsurance">
+              <PropertyRef Name="PaiedInsuranceId" />
+            </Principal>
+            <Dependent Role="SupplementaryHealthInsuranceUser">
+              <PropertyRef Name="PaiedInsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WealthInsurance_InsuranceId">
+          <End Role="Insurance" Type="Self.Insurance" Multiplicity="1" />
+          <End Role="WealthInsurance" Type="Self.WealthInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Insurance">
+              <PropertyRef Name="InsuranceId" />
+            </Principal>
+            <Dependent Role="WealthInsurance">
+              <PropertyRef Name="InsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="spNameCompanyAsc" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Province" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="spTwoInsurances" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="InsuranceType1" Type="int" Mode="In" />
+          <Parameter Name="InsuranceType2" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spUpdateInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PaymentPeriodType" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spuserCompanyInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="InsuranceCompanyName" Type="nvarchar" Mode="In" />
+          <Parameter Name="InsuranceName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="spUserInvitation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="InventionCodeNumber" Type="int" Mode="In" />
+          <Parameter Name="PaidInsuranceNumber" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spUserMaxInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Price" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spUserNotOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spUserReminder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PaymentPeriodType" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="Azki_DBModelStoreContainer">
+          <EntitySet Name="Insurance" EntityType="Self.Insurance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InsuranceCompany" EntityType="Self.InsuranceCompany" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LifeInsurance" EntityType="Self.LifeInsurance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaiedInsurance" EntityType="Self.PaiedInsurance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonalInsurance" EntityType="Self.PersonalInsurance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Place" EntityType="Self.Place" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reminder" EntityType="Self.Reminder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SicknessCoverage" EntityType="Self.SicknessCoverage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SicknessCoverageTypes" EntityType="Self.SicknessCoverageTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SupplementaryHealthInsurance" EntityType="Self.SupplementaryHealthInsurance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SupplementaryHealthInsuranceUser" EntityType="Self.SupplementaryHealthInsuranceUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WealthInsurance" EntityType="Self.WealthInsurance" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Insurance_InsuranceCompany" Association="Self.FK_Insurance_InsuranceCompany">
+            <End Role="InsuranceCompany" EntitySet="InsuranceCompany" />
+            <End Role="Insurance" EntitySet="Insurance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LifeInsurance_PersonalInsurance" Association="Self.FK_LifeInsurance_PersonalInsurance">
+            <End Role="PersonalInsurance" EntitySet="PersonalInsurance" />
+            <End Role="LifeInsurance" EntitySet="LifeInsurance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaiedInsurance_Insurance" Association="Self.FK_PaiedInsurance_Insurance">
+            <End Role="Insurance" EntitySet="Insurance" />
+            <End Role="PaiedInsurance" EntitySet="PaiedInsurance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaiedInsurance_User" Association="Self.FK_PaiedInsurance_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PaiedInsurance" EntitySet="PaiedInsurance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonalInsurance_Insurance" Association="Self.FK_PersonalInsurance_Insurance">
+            <End Role="Insurance" EntitySet="Insurance" />
+            <End Role="PersonalInsurance" EntitySet="PersonalInsurance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Place_PaiedInsurance" Association="Self.FK_Place_PaiedInsurance">
+            <End Role="PaiedInsurance" EntitySet="PaiedInsurance" />
+            <End Role="Place" EntitySet="Place" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reminder_Insurance" Association="Self.FK_Reminder_Insurance">
+            <End Role="Insurance" EntitySet="Insurance" />
+            <End Role="Reminder" EntitySet="Reminder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reminder_Users" Association="Self.FK_Reminder_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Reminder" EntitySet="Reminder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SicknessCoverage_SicknessCoverageTypes" Association="Self.FK_SicknessCoverage_SicknessCoverageTypes">
+            <End Role="SicknessCoverageTypes" EntitySet="SicknessCoverageTypes" />
+            <End Role="SicknessCoverage" EntitySet="SicknessCoverage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SicknessCoverage_SupplementaryHealthInsurance" Association="Self.FK_SicknessCoverage_SupplementaryHealthInsurance">
+            <End Role="SupplementaryHealthInsurance" EntitySet="SupplementaryHealthInsurance" />
+            <End Role="SicknessCoverage" EntitySet="SicknessCoverage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupplementaryHealthInsurance_PersonalInsurance" Association="Self.FK_SupplementaryHealthInsurance_PersonalInsurance">
+            <End Role="PersonalInsurance" EntitySet="PersonalInsurance" />
+            <End Role="SupplementaryHealthInsurance" EntitySet="SupplementaryHealthInsurance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupplementaryHealthInsuranceUser_PaiedInsurance" Association="Self.FK_SupplementaryHealthInsuranceUser_PaiedInsurance">
+            <End Role="PaiedInsurance" EntitySet="PaiedInsurance" />
+            <End Role="SupplementaryHealthInsuranceUser" EntitySet="SupplementaryHealthInsuranceUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WealthInsurance_InsuranceId" Association="Self.FK_WealthInsurance_InsuranceId">
+            <End Role="Insurance" EntitySet="Insurance" />
+            <End Role="WealthInsurance" EntitySet="WealthInsurance" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Azki_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Insurance">
+          <Key>
+            <PropertyRef Name="InsuranceId" />
+          </Key>
+          <Property Name="InsuranceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OfferName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContractTime" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Int64" Nullable="false" />
+          <Property Name="InsuranceCompanyId" Type="Int32" Nullable="false" />
+          <Property Name="DiscountPercent" Type="Int32" />
+          <NavigationProperty Name="InsuranceCompany" Relationship="Self.FK_Insurance_InsuranceCompany" FromRole="Insurance" ToRole="InsuranceCompany" />
+          <NavigationProperty Name="PaiedInsurances" Relationship="Self.FK_PaiedInsurance_Insurance" FromRole="Insurance" ToRole="PaiedInsurance" />
+          <NavigationProperty Name="PersonalInsurances" Relationship="Self.FK_PersonalInsurance_Insurance" FromRole="Insurance" ToRole="PersonalInsurance" />
+          <NavigationProperty Name="Reminders" Relationship="Self.FK_Reminder_Insurance" FromRole="Insurance" ToRole="Reminder" />
+          <NavigationProperty Name="WealthInsurances" Relationship="Self.FK_WealthInsurance_InsuranceId" FromRole="Insurance" ToRole="WealthInsurance" />
+        </EntityType>
+        <EntityType Name="InsuranceCompany">
+          <Key>
+            <PropertyRef Name="InsuranceCompanyId" />
+          </Key>
+          <Property Name="InsuranceCompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="120" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Insurances" Relationship="Self.FK_Insurance_InsuranceCompany" FromRole="InsuranceCompany" ToRole="Insurance" />
+        </EntityType>
+        <EntityType Name="LifeInsurance">
+          <Key>
+            <PropertyRef Name="LifeInsuranceId" />
+          </Key>
+          <Property Name="LifeInsuranceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RedemptionValue" Type="Int64" Nullable="false" />
+          <Property Name="AbilityToPay" Type="Int64" Nullable="false" />
+          <Property Name="MedicalExpenses" Type="Int64" Nullable="false" />
+          <Property Name="DeathCapital" Type="Int64" Nullable="false" />
+          <Property Name="PersonalInsuranceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PersonalInsurance" Relationship="Self.FK_LifeInsurance_PersonalInsurance" FromRole="LifeInsurance" ToRole="PersonalInsurance" />
+        </EntityType>
+        <EntityType Name="PaiedInsurance">
+          <Key>
+            <PropertyRef Name="PaiedInsuranceId" />
+          </Key>
+          <Property Name="PaiedInsuranceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InsuranceType" Type="Int32" Nullable="false" />
+          <Property Name="InsuranceId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Point" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Insurance" Relationship="Self.FK_PaiedInsurance_Insurance" FromRole="PaiedInsurance" ToRole="Insurance" />
+          <NavigationProperty Name="User" Relationship="Self.FK_PaiedInsurance_User" FromRole="PaiedInsurance" ToRole="Users" />
+          <NavigationProperty Name="Places" Relationship="Self.FK_Place_PaiedInsurance" FromRole="PaiedInsurance" ToRole="Place" />
+          <NavigationProperty Name="SupplementaryHealthInsuranceUsers" Relationship="Self.FK_SupplementaryHealthInsuranceUser_PaiedInsurance" FromRole="PaiedInsurance" ToRole="SupplementaryHealthInsuranceUser" />
+        </EntityType>
+        <EntityType Name="PersonalInsurance">
+          <Key>
+            <PropertyRef Name="PersonalInsuranceId" />
+          </Key>
+          <Property Name="PersonalInsuranceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IncreasePercent" Type="Int32" Nullable="false" />
+          <Property Name="PaymentPeriodType" Type="Int32" Nullable="false" />
+          <Property Name="InsuranceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Insurance" Relationship="Self.FK_PersonalInsurance_Insurance" FromRole="PersonalInsurance" ToRole="Insurance" />
+          <NavigationProperty Name="LifeInsurances" Relationship="Self.FK_LifeInsurance_PersonalInsurance" FromRole="PersonalInsurance" ToRole="LifeInsurance" />
+          <NavigationProperty Name="SupplementaryHealthInsurances" Relationship="Self.FK_SupplementaryHealthInsurance_PersonalInsurance" FromRole="PersonalInsurance" ToRole="SupplementaryHealthInsurance" />
+        </EntityType>
+        <EntityType Name="Place">
+          <Key>
+            <PropertyRef Name="PlaceId" />
+          </Key>
+          <Property Name="PlaceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PostalCode" Type="Int32" Nullable="false" />
+          <Property Name="Roof" Type="Int32" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Plate" Type="Int32" Nullable="false" />
+          <Property Name="Unit" Type="Int32" Nullable="false" />
+          <Property Name="PaiedInsuranceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PaiedInsurance" Relationship="Self.FK_Place_PaiedInsurance" FromRole="Place" ToRole="PaiedInsurance" />
+        </EntityType>
+        <EntityType Name="Reminder">
+          <Key>
+            <PropertyRef Name="ReminderId" />
+          </Key>
+          <Property Name="ReminderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="InsuranceId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Insurance" Relationship="Self.FK_Reminder_Insurance" FromRole="Reminder" ToRole="Insurance" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Reminder_Users" FromRole="Reminder" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="SicknessCoverage">
+          <Key>
+            <PropertyRef Name="SicknessCoverageId" />
+          </Key>
+          <Property Name="SicknessCoverageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SicknessCoverageTypesId" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Int64" Nullable="false" />
+          <Property Name="SupplementaryHealthInsuranceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SicknessCoverageType" Relationship="Self.FK_SicknessCoverage_SicknessCoverageTypes" FromRole="SicknessCoverage" ToRole="SicknessCoverageTypes" />
+          <NavigationProperty Name="SupplementaryHealthInsurance" Relationship="Self.FK_SicknessCoverage_SupplementaryHealthInsurance" FromRole="SicknessCoverage" ToRole="SupplementaryHealthInsurance" />
+        </EntityType>
+        <EntityType Name="SicknessCoverageType">
+          <Key>
+            <PropertyRef Name="SicknessCoverageTypesId" />
+          </Key>
+          <Property Name="SicknessCoverageTypesId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="SicknessCoverage" Relationship="Self.FK_SicknessCoverage_SicknessCoverageTypes" FromRole="SicknessCoverageTypes" ToRole="SicknessCoverage" />
+        </EntityType>
+        <EntityType Name="SupplementaryHealthInsurance">
+          <Key>
+            <PropertyRef Name="SupplementaryHealthInsuranceId" />
+          </Key>
+          <Property Name="SupplementaryHealthInsuranceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <Property Name="PersonalInsuranceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PersonalInsurance" Relationship="Self.FK_SupplementaryHealthInsurance_PersonalInsurance" FromRole="SupplementaryHealthInsurance" ToRole="PersonalInsurance" />
+          <NavigationProperty Name="SicknessCoverages" Relationship="Self.FK_SicknessCoverage_SupplementaryHealthInsurance" FromRole="SupplementaryHealthInsurance" ToRole="SicknessCoverage" />
+        </EntityType>
+        <EntityType Name="SupplementaryHealthInsuranceUser">
+          <Key>
+            <PropertyRef Name="SupplementaryHealthInsuranceUserId" />
+          </Key>
+          <Property Name="SupplementaryHealthInsuranceUserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgeRange" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RelationshipWithSupervisor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PaiedInsuranceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PaiedInsurance" Relationship="Self.FK_SupplementaryHealthInsuranceUser_PaiedInsurance" FromRole="SupplementaryHealthInsuranceUser" ToRole="PaiedInsurance" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Family" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="90" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="90" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NationalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InvitationCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="InvitationCodeUsageNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PaiedInsurances" Relationship="Self.FK_PaiedInsurance_User" FromRole="Users" ToRole="PaiedInsurance" />
+          <NavigationProperty Name="Reminders" Relationship="Self.FK_Reminder_Users" FromRole="Users" ToRole="Reminder" />
+        </EntityType>
+        <EntityType Name="WealthInsurance">
+          <Key>
+            <PropertyRef Name="WealthInsuranceId" />
+          </Key>
+          <Property Name="WealthInsuranceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InsuranceId" Type="Int32" Nullable="false" />
+          <Property Name="WealthValue" Type="Int64" Nullable="false" />
+          <Property Name="ProvinceName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CityName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="WealthInsuranceTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Meterage" Type="Int32" Nullable="false" />
+          <Property Name="BuildingAge" Type="Int32" Nullable="false" />
+          <Property Name="RoofNumbers" Type="Int32" />
+          <Property Name="WealthTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ValuePerMeter" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Insurance" Relationship="Self.FK_WealthInsurance_InsuranceId" FromRole="WealthInsurance" ToRole="Insurance" />
+        </EntityType>
+        <Association Name="FK_Insurance_InsuranceCompany">
+          <End Role="InsuranceCompany" Type="Self.InsuranceCompany" Multiplicity="1" />
+          <End Role="Insurance" Type="Self.Insurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InsuranceCompany">
+              <PropertyRef Name="InsuranceCompanyId" />
+            </Principal>
+            <Dependent Role="Insurance">
+              <PropertyRef Name="InsuranceCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaiedInsurance_Insurance">
+          <End Role="Insurance" Type="Self.Insurance" Multiplicity="1" />
+          <End Role="PaiedInsurance" Type="Self.PaiedInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Insurance">
+              <PropertyRef Name="InsuranceId" />
+            </Principal>
+            <Dependent Role="PaiedInsurance">
+              <PropertyRef Name="InsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonalInsurance_Insurance">
+          <End Role="Insurance" Type="Self.Insurance" Multiplicity="1" />
+          <End Role="PersonalInsurance" Type="Self.PersonalInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Insurance">
+              <PropertyRef Name="InsuranceId" />
+            </Principal>
+            <Dependent Role="PersonalInsurance">
+              <PropertyRef Name="InsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reminder_Insurance">
+          <End Role="Insurance" Type="Self.Insurance" Multiplicity="1" />
+          <End Role="Reminder" Type="Self.Reminder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Insurance">
+              <PropertyRef Name="InsuranceId" />
+            </Principal>
+            <Dependent Role="Reminder">
+              <PropertyRef Name="InsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WealthInsurance_InsuranceId">
+          <End Role="Insurance" Type="Self.Insurance" Multiplicity="1" />
+          <End Role="WealthInsurance" Type="Self.WealthInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Insurance">
+              <PropertyRef Name="InsuranceId" />
+            </Principal>
+            <Dependent Role="WealthInsurance">
+              <PropertyRef Name="InsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LifeInsurance_PersonalInsurance">
+          <End Role="PersonalInsurance" Type="Self.PersonalInsurance" Multiplicity="1" />
+          <End Role="LifeInsurance" Type="Self.LifeInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalInsurance">
+              <PropertyRef Name="PersonalInsuranceId" />
+            </Principal>
+            <Dependent Role="LifeInsurance">
+              <PropertyRef Name="PersonalInsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaiedInsurance_User">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="PaiedInsurance" Type="Self.PaiedInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="PaiedInsurance">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Place_PaiedInsurance">
+          <End Role="PaiedInsurance" Type="Self.PaiedInsurance" Multiplicity="1" />
+          <End Role="Place" Type="Self.Place" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaiedInsurance">
+              <PropertyRef Name="PaiedInsuranceId" />
+            </Principal>
+            <Dependent Role="Place">
+              <PropertyRef Name="PaiedInsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupplementaryHealthInsuranceUser_PaiedInsurance">
+          <End Role="PaiedInsurance" Type="Self.PaiedInsurance" Multiplicity="1" />
+          <End Role="SupplementaryHealthInsuranceUser" Type="Self.SupplementaryHealthInsuranceUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaiedInsurance">
+              <PropertyRef Name="PaiedInsuranceId" />
+            </Principal>
+            <Dependent Role="SupplementaryHealthInsuranceUser">
+              <PropertyRef Name="PaiedInsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupplementaryHealthInsurance_PersonalInsurance">
+          <End Role="PersonalInsurance" Type="Self.PersonalInsurance" Multiplicity="1" />
+          <End Role="SupplementaryHealthInsurance" Type="Self.SupplementaryHealthInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalInsurance">
+              <PropertyRef Name="PersonalInsuranceId" />
+            </Principal>
+            <Dependent Role="SupplementaryHealthInsurance">
+              <PropertyRef Name="PersonalInsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reminder_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Reminder" Type="Self.Reminder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Reminder">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SicknessCoverage_SicknessCoverageTypes">
+          <End Role="SicknessCoverageTypes" Type="Self.SicknessCoverageType" Multiplicity="1" />
+          <End Role="SicknessCoverage" Type="Self.SicknessCoverage" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="SicknessCoverageTypes">
+              <PropertyRef Name="SicknessCoverageTypesId" />
+            </Principal>
+            <Dependent Role="SicknessCoverage">
+              <PropertyRef Name="SicknessCoverageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SicknessCoverage_SupplementaryHealthInsurance">
+          <End Role="SupplementaryHealthInsurance" Type="Self.SupplementaryHealthInsurance" Multiplicity="1" />
+          <End Role="SicknessCoverage" Type="Self.SicknessCoverage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SupplementaryHealthInsurance">
+              <PropertyRef Name="SupplementaryHealthInsuranceId" />
+            </Principal>
+            <Dependent Role="SicknessCoverage">
+              <PropertyRef Name="SupplementaryHealthInsuranceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Azki_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Insurances" EntityType="Self.Insurance" />
+          <EntitySet Name="InsuranceCompanies" EntityType="Self.InsuranceCompany" />
+          <EntitySet Name="LifeInsurances" EntityType="Self.LifeInsurance" />
+          <EntitySet Name="PaiedInsurances" EntityType="Self.PaiedInsurance" />
+          <EntitySet Name="PersonalInsurances" EntityType="Self.PersonalInsurance" />
+          <EntitySet Name="Places" EntityType="Self.Place" />
+          <EntitySet Name="Reminders" EntityType="Self.Reminder" />
+          <EntitySet Name="SicknessCoverages" EntityType="Self.SicknessCoverage" />
+          <EntitySet Name="SicknessCoverageTypes" EntityType="Self.SicknessCoverageType" />
+          <EntitySet Name="SupplementaryHealthInsurances" EntityType="Self.SupplementaryHealthInsurance" />
+          <EntitySet Name="SupplementaryHealthInsuranceUsers" EntityType="Self.SupplementaryHealthInsuranceUser" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="WealthInsurances" EntityType="Self.WealthInsurance" />
+          <AssociationSet Name="FK_Insurance_InsuranceCompany" Association="Self.FK_Insurance_InsuranceCompany">
+            <End Role="InsuranceCompany" EntitySet="InsuranceCompanies" />
+            <End Role="Insurance" EntitySet="Insurances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaiedInsurance_Insurance" Association="Self.FK_PaiedInsurance_Insurance">
+            <End Role="Insurance" EntitySet="Insurances" />
+            <End Role="PaiedInsurance" EntitySet="PaiedInsurances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonalInsurance_Insurance" Association="Self.FK_PersonalInsurance_Insurance">
+            <End Role="Insurance" EntitySet="Insurances" />
+            <End Role="PersonalInsurance" EntitySet="PersonalInsurances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reminder_Insurance" Association="Self.FK_Reminder_Insurance">
+            <End Role="Insurance" EntitySet="Insurances" />
+            <End Role="Reminder" EntitySet="Reminders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WealthInsurance_InsuranceId" Association="Self.FK_WealthInsurance_InsuranceId">
+            <End Role="Insurance" EntitySet="Insurances" />
+            <End Role="WealthInsurance" EntitySet="WealthInsurances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LifeInsurance_PersonalInsurance" Association="Self.FK_LifeInsurance_PersonalInsurance">
+            <End Role="PersonalInsurance" EntitySet="PersonalInsurances" />
+            <End Role="LifeInsurance" EntitySet="LifeInsurances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaiedInsurance_User" Association="Self.FK_PaiedInsurance_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PaiedInsurance" EntitySet="PaiedInsurances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Place_PaiedInsurance" Association="Self.FK_Place_PaiedInsurance">
+            <End Role="PaiedInsurance" EntitySet="PaiedInsurances" />
+            <End Role="Place" EntitySet="Places" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupplementaryHealthInsuranceUser_PaiedInsurance" Association="Self.FK_SupplementaryHealthInsuranceUser_PaiedInsurance">
+            <End Role="PaiedInsurance" EntitySet="PaiedInsurances" />
+            <End Role="SupplementaryHealthInsuranceUser" EntitySet="SupplementaryHealthInsuranceUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupplementaryHealthInsurance_PersonalInsurance" Association="Self.FK_SupplementaryHealthInsurance_PersonalInsurance">
+            <End Role="PersonalInsurance" EntitySet="PersonalInsurances" />
+            <End Role="SupplementaryHealthInsurance" EntitySet="SupplementaryHealthInsurances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reminder_Users" Association="Self.FK_Reminder_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Reminder" EntitySet="Reminders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SicknessCoverage_SicknessCoverageTypes" Association="Self.FK_SicknessCoverage_SicknessCoverageTypes">
+            <End Role="SicknessCoverageTypes" EntitySet="SicknessCoverageTypes" />
+            <End Role="SicknessCoverage" EntitySet="SicknessCoverages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SicknessCoverage_SupplementaryHealthInsurance" Association="Self.FK_SicknessCoverage_SupplementaryHealthInsurance">
+            <End Role="SupplementaryHealthInsurance" EntitySet="SupplementaryHealthInsurances" />
+            <End Role="SicknessCoverage" EntitySet="SicknessCoverages" />
+          </AssociationSet>
+          <FunctionImport Name="spNameCompanyAsc" ReturnType="Collection(Azki_DBModel.spNameCompanyAsc_Result)">
+            <Parameter Name="Province" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spTwoInsurances" ReturnType="Collection(Azki_DBModel.spTwoInsurances_Result)">
+            <Parameter Name="InsuranceType1" Mode="In" Type="Int32" />
+            <Parameter Name="InsuranceType2" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spUpdateInsurance">
+            <Parameter Name="PaymentPeriodType" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spuserCompanyInsurance" ReturnType="Collection(Azki_DBModel.spuserCompanyInsurance_Result)">
+            <Parameter Name="InsuranceCompanyName" Mode="In" Type="String" />
+            <Parameter Name="InsuranceName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spUserInvitation" ReturnType="Collection(String)">
+            <Parameter Name="InventionCodeNumber" Mode="In" Type="Int32" />
+            <Parameter Name="PaidInsuranceNumber" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spUserMaxInsurance" ReturnType="Collection(Azki_DBModel.spUserMaxInsurance_Result)">
+            <Parameter Name="Price" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spUserNotOrder" ReturnType="Collection(String)" />
+          <FunctionImport Name="spUserReminder" ReturnType="Collection(String)">
+            <Parameter Name="PaymentPeriodType" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="spNameCompanyAsc_Result">
+          <Property Type="Int32" Name="WealthInsuranceId" Nullable="false" />
+          <Property Type="Int32" Name="InsuranceId" Nullable="false" />
+          <Property Type="Int64" Name="WealthValue" Nullable="false" />
+          <Property Type="String" Name="ProvinceName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="CityName" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="WealthInsuranceTypeId" Nullable="false" />
+          <Property Type="Int32" Name="Meterage" Nullable="false" />
+          <Property Type="Int32" Name="BuildingAge" Nullable="false" />
+          <Property Type="Int32" Name="RoofNumbers" Nullable="true" />
+          <Property Type="Int32" Name="WealthTypeId" Nullable="false" />
+          <Property Type="Int64" Name="ValuePerMeter" Nullable="false" />
+          <Property Type="Int32" Name="InsuranceId1" Nullable="true" />
+          <Property Type="String" Name="OfferName" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="ContractTime" Nullable="true" />
+          <Property Type="Int64" Name="Price" Nullable="true" />
+          <Property Type="Int32" Name="InsuranceCompanyId" Nullable="true" />
+          <Property Type="Int32" Name="DiscountPercent" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spTwoInsurances_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Family" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="spuserCompanyInsurance_Result">
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Family" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="90" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="90" />
+          <Property Type="String" Name="NationalCode" Nullable="false" MaxLength="10" />
+          <Property Type="DateTime" Name="CreateDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="InvitationCode" Nullable="false" MaxLength="20" />
+          <Property Type="Int32" Name="InvitationCodeUsageNumber" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="spUserMaxInsurance_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Family" Nullable="false" MaxLength="100" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Azki_DBModelStoreContainer" CdmEntityContainer="Azki_DBEntities">
+          <EntitySetMapping Name="Insurances">
+            <EntityTypeMapping TypeName="Azki_DBModel.Insurance">
+              <MappingFragment StoreEntitySet="Insurance">
+                <ScalarProperty Name="InsuranceId" ColumnName="InsuranceId" />
+                <ScalarProperty Name="OfferName" ColumnName="OfferName" />
+                <ScalarProperty Name="ContractTime" ColumnName="ContractTime" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="InsuranceCompanyId" ColumnName="InsuranceCompanyId" />
+                <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InsuranceCompanies">
+            <EntityTypeMapping TypeName="Azki_DBModel.InsuranceCompany">
+              <MappingFragment StoreEntitySet="InsuranceCompany">
+                <ScalarProperty Name="InsuranceCompanyId" ColumnName="InsuranceCompanyId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LifeInsurances">
+            <EntityTypeMapping TypeName="Azki_DBModel.LifeInsurance">
+              <MappingFragment StoreEntitySet="LifeInsurance">
+                <ScalarProperty Name="LifeInsuranceId" ColumnName="LifeInsuranceId" />
+                <ScalarProperty Name="RedemptionValue" ColumnName="RedemptionValue" />
+                <ScalarProperty Name="AbilityToPay" ColumnName="AbilityToPay" />
+                <ScalarProperty Name="MedicalExpenses" ColumnName="MedicalExpenses" />
+                <ScalarProperty Name="DeathCapital" ColumnName="DeathCapital" />
+                <ScalarProperty Name="PersonalInsuranceId" ColumnName="PersonalInsuranceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaiedInsurances">
+            <EntityTypeMapping TypeName="Azki_DBModel.PaiedInsurance">
+              <MappingFragment StoreEntitySet="PaiedInsurance">
+                <ScalarProperty Name="PaiedInsuranceId" ColumnName="PaiedInsuranceId" />
+                <ScalarProperty Name="InsuranceType" ColumnName="InsuranceType" />
+                <ScalarProperty Name="InsuranceId" ColumnName="InsuranceId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Point" ColumnName="Point" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonalInsurances">
+            <EntityTypeMapping TypeName="Azki_DBModel.PersonalInsurance">
+              <MappingFragment StoreEntitySet="PersonalInsurance">
+                <ScalarProperty Name="PersonalInsuranceId" ColumnName="PersonalInsuranceId" />
+                <ScalarProperty Name="IncreasePercent" ColumnName="IncreasePercent" />
+                <ScalarProperty Name="PaymentPeriodType" ColumnName="PaymentPeriodType" />
+                <ScalarProperty Name="InsuranceId" ColumnName="InsuranceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Places">
+            <EntityTypeMapping TypeName="Azki_DBModel.Place">
+              <MappingFragment StoreEntitySet="Place">
+                <ScalarProperty Name="PlaceId" ColumnName="PlaceId" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="Roof" ColumnName="Roof" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Plate" ColumnName="Plate" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="PaiedInsuranceId" ColumnName="PaiedInsuranceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reminders">
+            <EntityTypeMapping TypeName="Azki_DBModel.Reminder">
+              <MappingFragment StoreEntitySet="Reminder">
+                <ScalarProperty Name="ReminderId" ColumnName="ReminderId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="InsuranceId" ColumnName="InsuranceId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SicknessCoverages">
+            <EntityTypeMapping TypeName="Azki_DBModel.SicknessCoverage">
+              <MappingFragment StoreEntitySet="SicknessCoverage">
+                <ScalarProperty Name="SicknessCoverageId" ColumnName="SicknessCoverageId" />
+                <ScalarProperty Name="SicknessCoverageTypesId" ColumnName="SicknessCoverageTypesId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="SupplementaryHealthInsuranceId" ColumnName="SupplementaryHealthInsuranceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SicknessCoverageTypes">
+            <EntityTypeMapping TypeName="Azki_DBModel.SicknessCoverageType">
+              <MappingFragment StoreEntitySet="SicknessCoverageTypes">
+                <ScalarProperty Name="SicknessCoverageTypesId" ColumnName="SicknessCoverageTypesId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SupplementaryHealthInsurances">
+            <EntityTypeMapping TypeName="Azki_DBModel.SupplementaryHealthInsurance">
+              <MappingFragment StoreEntitySet="SupplementaryHealthInsurance">
+                <ScalarProperty Name="SupplementaryHealthInsuranceId" ColumnName="SupplementaryHealthInsuranceId" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="PersonalInsuranceId" ColumnName="PersonalInsuranceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SupplementaryHealthInsuranceUsers">
+            <EntityTypeMapping TypeName="Azki_DBModel.SupplementaryHealthInsuranceUser">
+              <MappingFragment StoreEntitySet="SupplementaryHealthInsuranceUser">
+                <ScalarProperty Name="SupplementaryHealthInsuranceUserId" ColumnName="SupplementaryHealthInsuranceUserId" />
+                <ScalarProperty Name="AgeRange" ColumnName="AgeRange" />
+                <ScalarProperty Name="RelationshipWithSupervisor" ColumnName="RelationshipWithSupervisor" />
+                <ScalarProperty Name="PaiedInsuranceId" ColumnName="PaiedInsuranceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Azki_DBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Azki_DBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Family" ColumnName="Family" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="NationalCode" ColumnName="NationalCode" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="InvitationCode" ColumnName="InvitationCode" />
+                <ScalarProperty Name="InvitationCodeUsageNumber" ColumnName="InvitationCodeUsageNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WealthInsurances">
+            <EntityTypeMapping TypeName="Azki_DBModel.WealthInsurance">
+              <MappingFragment StoreEntitySet="WealthInsurance">
+                <ScalarProperty Name="WealthInsuranceId" ColumnName="WealthInsuranceId" />
+                <ScalarProperty Name="InsuranceId" ColumnName="InsuranceId" />
+                <ScalarProperty Name="WealthValue" ColumnName="WealthValue" />
+                <ScalarProperty Name="ProvinceName" ColumnName="ProvinceName" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="WealthInsuranceTypeId" ColumnName="WealthInsuranceTypeId" />
+                <ScalarProperty Name="Meterage" ColumnName="Meterage" />
+                <ScalarProperty Name="BuildingAge" ColumnName="BuildingAge" />
+                <ScalarProperty Name="RoofNumbers" ColumnName="RoofNumbers" />
+                <ScalarProperty Name="WealthTypeId" ColumnName="WealthTypeId" />
+                <ScalarProperty Name="ValuePerMeter" ColumnName="ValuePerMeter" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spNameCompanyAsc" FunctionName="Azki_DBModel.Store.spNameCompanyAsc">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Azki_DBModel.spNameCompanyAsc_Result">
+                <ScalarProperty Name="WealthInsuranceId" ColumnName="WealthInsuranceId" />
+                <ScalarProperty Name="InsuranceId" ColumnName="InsuranceId" />
+                <ScalarProperty Name="WealthValue" ColumnName="WealthValue" />
+                <ScalarProperty Name="ProvinceName" ColumnName="ProvinceName" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="WealthInsuranceTypeId" ColumnName="WealthInsuranceTypeId" />
+                <ScalarProperty Name="Meterage" ColumnName="Meterage" />
+                <ScalarProperty Name="BuildingAge" ColumnName="BuildingAge" />
+                <ScalarProperty Name="RoofNumbers" ColumnName="RoofNumbers" />
+                <ScalarProperty Name="WealthTypeId" ColumnName="WealthTypeId" />
+                <ScalarProperty Name="ValuePerMeter" ColumnName="ValuePerMeter" />
+                <ScalarProperty Name="InsuranceId1" ColumnName="InsuranceId1" />
+                <ScalarProperty Name="OfferName" ColumnName="OfferName" />
+                <ScalarProperty Name="ContractTime" ColumnName="ContractTime" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="InsuranceCompanyId" ColumnName="InsuranceCompanyId" />
+                <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spTwoInsurances" FunctionName="Azki_DBModel.Store.spTwoInsurances">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Azki_DBModel.spTwoInsurances_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Family" ColumnName="Family" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spUpdateInsurance" FunctionName="Azki_DBModel.Store.spUpdateInsurance" />
+          <FunctionImportMapping FunctionImportName="spuserCompanyInsurance" FunctionName="Azki_DBModel.Store.spuserCompanyInsurance">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Azki_DBModel.spuserCompanyInsurance_Result">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Family" ColumnName="Family" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="NationalCode" ColumnName="NationalCode" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="InvitationCode" ColumnName="InvitationCode" />
+                <ScalarProperty Name="InvitationCodeUsageNumber" ColumnName="InvitationCodeUsageNumber" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spUserInvitation" FunctionName="Azki_DBModel.Store.spUserInvitation" />
+          <FunctionImportMapping FunctionImportName="spUserMaxInsurance" FunctionName="Azki_DBModel.Store.spUserMaxInsurance">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Azki_DBModel.spUserMaxInsurance_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Family" ColumnName="Family" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spUserNotOrder" FunctionName="Azki_DBModel.Store.spUserNotOrder" />
+          <FunctionImportMapping FunctionImportName="spUserReminder" FunctionName="Azki_DBModel.Store.spUserReminder" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
