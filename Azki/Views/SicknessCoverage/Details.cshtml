@@ -1,0 +1,42 @@
+﻿@model Azki.Data.SicknessCoverage
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SicknessCoverage</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SicknessCoverageTypesId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SicknessCoverageTypesId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplementaryHealthInsuranceId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplementaryHealthInsuranceId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SicknessCoverageId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -39,8 +39,8 @@ namespace Azki.Data
         public virtual DbSet<SupplementaryHealthInsurance> SupplementaryHealthInsurances { get; set; }
         public virtual DbSet<SupplementaryHealthInsuranceUser> SupplementaryHealthInsuranceUsers { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WealthInsurance> WealthInsurances { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     
         public virtual ObjectResult<spNameCompanyAsc_Result> spNameCompanyAsc(string province)
         {
@@ -64,13 +64,17 @@ namespace Azki.Data
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spTwoInsurances_Result>("spTwoInsurances", fist_insuranceParameter, second_insuranceParameter);
         }
     
-        public virtual int spUpdateInsurance(Nullable<int> year_Contract)
+        public virtual int spUpdateInsurance(Nullable<int> y, Nullable<int> baseInsurance)
         {
-            var year_ContractParameter = year_Contract.HasValue ?
-                new ObjectParameter("year_Contract", year_Contract) :
-                new ObjectParameter("year_Contract", typeof(int));
+            var yParameter = y.HasValue ?
+                new ObjectParameter("Y", y) :
+                new ObjectParameter("Y", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateInsurance", year_ContractParameter);
+            var baseInsuranceParameter = baseInsurance.HasValue ?
+                new ObjectParameter("baseInsurance", baseInsurance) :
+                new ObjectParameter("baseInsurance", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateInsurance", yParameter, baseInsuranceParameter);
         }
     
         public virtual ObjectResult<spuserCompanyInsurance_Result> spuserCompanyInsurance(string insuranceCompanyName, string insuranceName)

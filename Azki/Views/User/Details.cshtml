@@ -1,0 +1,71 @@
+﻿@model Azki.Data.User
+
+@{
+    ViewBag.Title = "جزئیات";
+}
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Family)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Family)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NationalCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NationalCode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.InvitationCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvitationCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InvitationCodeUsageNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvitationCodeUsageNumber)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.UserId }) |
+    @Html.ActionLink("بازگشت به لیست", "Index")
+</p>

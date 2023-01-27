@@ -1,0 +1,62 @@
+﻿@model Azki.Data.Insurance
+
+@{
+    ViewBag.Title = "حذف";
+}
+
+<h3>آیا از حذف این مورد مطمئن هستیئ؟</h3>
+<div>
+    <h4>Insurance</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OfferName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OfferName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContractTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContractTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InsuranceCompanyId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InsuranceCompanyId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscountPercent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiscountPercent)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("بازگشن به لیست", "Index")
+        </div>
+    }
+</div>

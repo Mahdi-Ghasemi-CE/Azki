@@ -1,0 +1,50 @@
+﻿@model Azki.Data.PaiedInsurance
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PaiedInsurance</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.InsuranceType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InsuranceType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InsuranceId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InsuranceId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Point)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Point)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PaiedInsuranceId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

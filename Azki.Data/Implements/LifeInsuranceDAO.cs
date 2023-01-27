@@ -1,10 +1,9 @@
 ﻿using Azki.Data.Interfaces;
+using Dapper;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Azki.Data.Implements
 {
@@ -12,13 +11,8 @@ namespace Azki.Data.Implements
     {
         public bool deleteByID(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"delete from [dbo].[LifeInsurance] where LifeInsuranceId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            cmd.ExecuteNonQuery();
-            Connection.Close();
+            var query = $"delete from [dbo].[LifeInsurance] where LifeInsuranceId = {id}";
+            var data = Connection.Query(query, null, commandType: CommandType.Text);
 
             try
             {
@@ -37,13 +31,9 @@ namespace Azki.Data.Implements
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"delete from [dbo].[LifeInsurance] where LifeInsuranceId in ({ids})";
-                cmd.Connection = Connection;
-                Connection.Open();
-                cmd.ExecuteNonQuery();
-                Connection.Close();
+                var query = $"delete from [dbo].[LifeInsurance] where LifeInsuranceId in ({ids})";
+                var data = Connection.Query(query, null, commandType: CommandType.Text);
+
                 return true;
             }
             catch (Exception)
@@ -54,71 +44,76 @@ namespace Azki.Data.Implements
 
         public List<LifeInsurance> findAll()
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "select * from [dbo].[LifeInsurance]";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<LifeInsurance>)res;
+            var query = "SELECT [LifeInsuranceId]" +
+                ",[RedemptionValue]" +
+                ",[AbilityToPay]" +
+                ",[MedicalExpenses]" +
+                ",[DeathCapital]" +
+                ",[PersonalInsuranceId]" +
+                "FROM [dbo].[LifeInsurance]";
 
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+            return data.Read<LifeInsurance>().ToList();
         }
 
         public LifeInsurance findById(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[LifeInsurance] where LifeInsuranceId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (LifeInsurance)res;
+            var query = "SELECT [LifeInsuranceId]" +
+                ",[RedemptionValue]" +
+                ",[AbilityToPay]" +
+                ",[MedicalExpenses]" +
+                ",[DeathCapital]" +
+                ",[PersonalInsuranceId]" +
+                "FROM [dbo].[LifeInsurance]";
+            var data = Connection.Query<LifeInsurance>(query);
+
+            return data.SingleOrDefault();
         }
 
         public List<LifeInsurance> findByIDs(List<int> ids)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[LifeInsurance] where LifeInsuranceId in ({ids})";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<LifeInsurance>)res;
+
+            var query = "SELECT [LifeInsuranceId]" +
+                   ",[RedemptionValue]" +
+                   ",[AbilityToPay]" +
+                   ",[MedicalExpenses]" +
+                   ",[DeathCapital]" +
+                   ",[PersonalInsuranceId]" +
+                   $"FROM [dbo].[LifeInsurance] where LifeInsuranceId in ({ids})";
+
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+
+            return data.Read<LifeInsurance>().ToList();
         }
 
         public LifeInsurance save(LifeInsurance E)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
+            var query = "";
             if (E.LifeInsuranceId == 0)
             {
-
-                cmd.CommandText = $"INSERT INTO [dbo].[LifeInsurance]([RedemptionValue],[AbilityToPay],[MedicalExpenses],[DeathCapital],[PersonalInsuranceId])" +
+                query = $"INSERT INTO [dbo].[LifeInsurance]([RedemptionValue],[AbilityToPay],[MedicalExpenses],[DeathCapital],[PersonalInsuranceId])" +
                                    $"VALUES (<{E.RedemptionValue}>,<{E.AbilityToPay}>,<{E.MedicalExpenses}>,<{E.DeathCapital}>,<{E.PersonalInsuranceId}>)" +
                                    $"SELECT * from [dbo].[LifeInsurance] where LifeInsuranceId = scope_identity()";
             }
             else
             {
-                cmd.CommandText = $"UPDATE [dbo].[LifeInsurance]" +
+                query = $"UPDATE [dbo].[LifeInsurance]" +
                                    $"SET [RedemptionValue] = {E.RedemptionValue}," +
                                    $"[AbilityToPay] = {E.AbilityToPay}," +
                                    $"[MedicalExpenses] = {E.MedicalExpenses}" +
                                    $",[DeathCapital] = {E.DeathCapital}" +
                                    $",[PersonalInsuranceId] = {E.PersonalInsuranceId}" +
                                    $"WHERE LifeInsuranceId = {E.LifeInsuranceId}" +
-                                     $"SELECT * from [dbo].[LifeInsurance] where LifeInsuranceId = scope_identity()";
-
+                                    "SELECT [LifeInsuranceId]" +
+                                    ",[RedemptionValue]" +
+                                    ",[AbilityToPay]" +
+                                    ",[MedicalExpenses]" +
+                                    ",[DeathCapital]" +
+                                    ",[PersonalInsuranceId]" +
+                                    $"FROM [dbo].[LifeInsurance] where LifeInsuranceId = {E.LifeInsuranceId}";
             }
-
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-
-            return (LifeInsurance)res;
+            var data = Connection.Query<LifeInsurance>(query, null, commandType: CommandType.Text);
+            return data.SingleOrDefault();
         }
     }
 }

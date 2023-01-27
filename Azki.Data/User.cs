@@ -27,7 +27,6 @@ namespace Azki.Data
         public string UserName { get; set; }
         public string Password { get; set; }
         public string NationalCode { get; set; }
-        public System.DateTime CreateDate { get; set; }
         public string InvitationCode { get; set; }
         public int InvitationCodeUsageNumber { get; set; }
     

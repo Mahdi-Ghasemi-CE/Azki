@@ -1,6 +1,8 @@
 ﻿using Azki.Data.Interfaces;
+using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -12,13 +14,8 @@ namespace Azki.Data.Implements
     {
         public bool deleteByID(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"delete from [dbo].[PersonalInsurance] where PersonalInsuranceId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            cmd.ExecuteNonQuery();
-            Connection.Close();
+            var query = $"delete from [dbo].[PersonalInsurance] where PersonalInsuranceId = {id}";
+            var data = Connection.Query(query, null, commandType: CommandType.Text);
 
             try
             {
@@ -37,81 +34,75 @@ namespace Azki.Data.Implements
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"delete from [dbo].[PersonalInsurance] where PersonalInsuranceId in ({ids})";
-                cmd.Connection = Connection;
-                Connection.Open();
-                cmd.ExecuteNonQuery();
-                Connection.Close();
+                var query = $"delete from [dbo].[PersonalInsurance] where PersonalInsuranceId in ({ids})";
+                var data = Connection.Query(query, null, commandType: CommandType.Text);
                 return true;
             }
             catch (Exception)
             {
                 return false;
             }
-
         }
 
         public List<PersonalInsurance> findAll()
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "select * from [dbo].[PersonalInsurance]";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<PersonalInsurance>)res;
+            var query = "SELECT [PersonalInsuranceId]" +
+                ",[IncreasePercent]" +
+                ",[PaymentPeriodType]" +
+                ",[InsuranceId] " +
+                "FROM [dbo].[PersonalInsurance]";
+
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+
+            return data.Read<PersonalInsurance>().ToList();
         }
 
         public PersonalInsurance findById(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[PersonalInsurance] where PersonalInsuranceId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (PersonalInsurance)res;
+            var query = "SELECT [PersonalInsuranceId]" +
+                ",[IncreasePercent]" +
+                ",[PaymentPeriodType]" +
+                ",[InsuranceId] " +
+                $"FROM [dbo].[PersonalInsurance] where PersonalInsuranceId = {id}";
+
+            var data = Connection.Query<PersonalInsurance>(query);
+
+            return data.SingleOrDefault(); ;
         }
 
         public List<PersonalInsurance> findByIDs(List<int> ids)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[PersonalInsurance] where PersonalInsuranceId in ({ids})";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<PersonalInsurance>)res;
+            var query = "SELECT [PersonalInsuranceId]" +
+               ",[IncreasePercent]" +
+               ",[PaymentPeriodType]" +
+               ",[InsuranceId] " +
+               $"FROM [dbo].[PersonalInsurance] where InsuranceCompanyId in ({ids})";
+
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+            return data.Read<PersonalInsurance>().ToList();
         }
 
         public PersonalInsurance save(PersonalInsurance E)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
+            var query = "";
             if (E.PersonalInsuranceId == 0)
             {
-            cmd.CommandText = $"INSERT INTO [dbo].[PersonalInsurance]([IncreasePercent],[PaymentPeriodType],[InsuranceId])" +
-                               $"VALUES ({E.IncreasePercent},{E.PaymentPeriodType},{E.InsuranceId})" +
-                               $"SELECT * from [dbo].[PersonalInsurance] where PersonalInsuranceId = scope_identity()";
+                query = $"INSERT INTO [dbo].[PersonalInsurance]([IncreasePercent],[PaymentPeriodType],[InsuranceId])" +
+                                   $"VALUES ({E.IncreasePercent},{E.PaymentPeriodType},{E.InsuranceId})" +
+                                    $"SELECT * FROM [dbo].[PersonalInsurance] where PersonalInsuranceId =  scope_identity()";
             }
             else
             {
-            cmd.CommandText = $"UPDATE [dbo].[PersonalInsurance]" +
-                    $"SET [IncreasePercent] = {E.IncreasePercent},[PaymentPeriodType] = {E.PaymentPeriodType},[InsuranceId] = {E.InsuranceId}" +
-                    $"WHERE PersonalInsuranceId = {E.PersonalInsuranceId}" +
-                               $"SELECT * from [dbo].[PersonalInsurance] where PersonalInsuranceId = scope_identity()";
+                query = $"UPDATE [dbo].[PersonalInsurance]" +
+                        $"SET [IncreasePercent] = {E.IncreasePercent},[PaymentPeriodType] = {E.PaymentPeriodType},[InsuranceId] = {E.InsuranceId}" +
+                        $"WHERE PersonalInsuranceId = {E.PersonalInsuranceId}" + "SELECT [PersonalInsuranceId]" +
+                        ",[IncreasePercent]" +
+                        ",[PaymentPeriodType]" +
+                        ",[InsuranceId] " +
+                        $"FROM [dbo].[PersonalInsurance] where PersonalInsuranceId = {E.PersonalInsuranceId}";
             }
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-
-            return (PersonalInsurance)res;
+            var data = Connection.Query<PersonalInsurance>(query, null, commandType: CommandType.Text);
+            return data.SingleOrDefault();
         }
     }
 }

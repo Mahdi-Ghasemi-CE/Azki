@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -45,7 +46,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.0.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StructureMap.4.7.1\lib\net45\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap.Microsoft.DependencyInjection, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StructureMap.Microsoft.DependencyInjection.2.0.0\lib\netstandard2.0\StructureMap.Microsoft.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.web.4.0.0.315\lib\net40\StructureMap.Web.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -121,6 +143,19 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InsuranceCompanyController.cs" />
+    <Compile Include="Controllers\InsuranceController.cs" />
+    <Compile Include="Controllers\LifeInsuranceController.cs" />
+    <Compile Include="Controllers\PaiedInsuranceController.cs" />
+    <Compile Include="Controllers\PersonalInsuranceController.cs" />
+    <Compile Include="Controllers\PlaceController.cs" />
+    <Compile Include="Controllers\ReminderController.cs" />
+    <Compile Include="Controllers\SicknessCoverageController.cs" />
+    <Compile Include="Controllers\SicknessCoverageTypesController.cs" />
+    <Compile Include="Controllers\SupplementaryHealthInsuranceController.cs" />
+    <Compile Include="Controllers\SupplementaryHealthInsuranceUserController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\WealthInsuranceController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -162,6 +197,71 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\InsuranceCompany\Index.cshtml" />
+    <Content Include="Views\InsuranceCompany\Details.cshtml" />
+    <Content Include="Views\InsuranceCompany\Create.cshtml" />
+    <Content Include="Views\InsuranceCompany\Edit.cshtml" />
+    <Content Include="Views\InsuranceCompany\Delete.cshtml" />
+    <Content Include="Views\Insurance\Index.cshtml" />
+    <Content Include="Views\Insurance\Details.cshtml" />
+    <Content Include="Views\Insurance\Create.cshtml" />
+    <Content Include="Views\Insurance\Edit.cshtml" />
+    <Content Include="Views\Insurance\Delete.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Details.cshtml" />
+    <Content Include="Views\User\Delete.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\WealthInsurance\Index.cshtml" />
+    <Content Include="Views\WealthInsurance\Details.cshtml" />
+    <Content Include="Views\WealthInsurance\Create.cshtml" />
+    <Content Include="Views\WealthInsurance\Edit.cshtml" />
+    <Content Include="Views\WealthInsurance\Delete.cshtml" />
+    <Content Include="Views\Place\Index.cshtml" />
+    <Content Include="Views\Place\Details.cshtml" />
+    <Content Include="Views\Place\Create.cshtml" />
+    <Content Include="Views\Place\Edit.cshtml" />
+    <Content Include="Views\Place\Delete.cshtml" />
+    <Content Include="Views\PaiedInsurance\Index.cshtml" />
+    <Content Include="Views\PaiedInsurance\Details.cshtml" />
+    <Content Include="Views\PaiedInsurance\Create.cshtml" />
+    <Content Include="Views\PaiedInsurance\Edit.cshtml" />
+    <Content Include="Views\PaiedInsurance\Delete.cshtml" />
+    <Content Include="Views\LifeInsurance\Index.cshtml" />
+    <Content Include="Views\LifeInsurance\Details.cshtml" />
+    <Content Include="Views\LifeInsurance\Create.cshtml" />
+    <Content Include="Views\LifeInsurance\Edit.cshtml" />
+    <Content Include="Views\LifeInsurance\Delete.cshtml" />
+    <Content Include="Views\PersonalInsurance\Index.cshtml" />
+    <Content Include="Views\PersonalInsurance\Details.cshtml" />
+    <Content Include="Views\PersonalInsurance\Create.cshtml" />
+    <Content Include="Views\PersonalInsurance\Edit.cshtml" />
+    <Content Include="Views\PersonalInsurance\Delete.cshtml" />
+    <Content Include="Views\Reminder\Index.cshtml" />
+    <Content Include="Views\Reminder\Details.cshtml" />
+    <Content Include="Views\Reminder\Create.cshtml" />
+    <Content Include="Views\Reminder\Edit.cshtml" />
+    <Content Include="Views\Reminder\Delete.cshtml" />
+    <Content Include="Views\SicknessCoverage\Index.cshtml" />
+    <Content Include="Views\SicknessCoverage\Details.cshtml" />
+    <Content Include="Views\SicknessCoverage\Create.cshtml" />
+    <Content Include="Views\SicknessCoverage\Edit.cshtml" />
+    <Content Include="Views\SicknessCoverage\Delete.cshtml" />
+    <Content Include="Views\SicknessCoverageTypes\Index.cshtml" />
+    <Content Include="Views\SicknessCoverageTypes\Details.cshtml" />
+    <Content Include="Views\SicknessCoverageTypes\Create.cshtml" />
+    <Content Include="Views\SicknessCoverageTypes\Edit.cshtml" />
+    <Content Include="Views\SicknessCoverageTypes\Delete.cshtml" />
+    <Content Include="Views\SupplementaryHealthInsurance\Index.cshtml" />
+    <Content Include="Views\SupplementaryHealthInsurance\Details.cshtml" />
+    <Content Include="Views\SupplementaryHealthInsurance\Create.cshtml" />
+    <Content Include="Views\SupplementaryHealthInsurance\Edit.cshtml" />
+    <Content Include="Views\SupplementaryHealthInsurance\Delete.cshtml" />
+    <Content Include="Views\SupplementaryHealthInsuranceUser\Index.cshtml" />
+    <Content Include="Views\SupplementaryHealthInsuranceUser\Details.cshtml" />
+    <Content Include="Views\SupplementaryHealthInsuranceUser\Create.cshtml" />
+    <Content Include="Views\SupplementaryHealthInsuranceUser\Edit.cshtml" />
+    <Content Include="Views\SupplementaryHealthInsuranceUser\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -179,6 +279,12 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Azki.Data\Azki.Data.csproj">
+      <Project>{D7A772A2-1EEA-4F79-A2D7-DDD18BA8049B}</Project>
+      <Name>Azki.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -213,7 +319,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
   </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

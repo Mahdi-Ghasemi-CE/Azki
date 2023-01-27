@@ -1,24 +1,18 @@
 ﻿using Azki.Data.Interfaces;
+using Dapper;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Azki.Data.Implements
 {
-    public class UsersDAO:BaseRepository,Repository<User,int>
+    public class UsersDAO : BaseRepository, Repository<User, int>
     {
         public bool deleteByID(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"delete from [dbo].[User] where UserId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            cmd.ExecuteNonQuery();
-            Connection.Close();
+            var query = $"delete from [dbo].[Users] where UserId = {id}";
+            var data = Connection.Query(query, null, commandType: CommandType.Text);
 
             try
             {
@@ -37,13 +31,9 @@ namespace Azki.Data.Implements
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"delete from [dbo].[User] where UserId in ({ids})";
-                cmd.Connection = Connection;
-                Connection.Open();
-                cmd.ExecuteNonQuery();
-                Connection.Close();
+                var query = $"delete from [dbo].[Users] where UserId in ({ids})";
+                var data = Connection.Query(query, null, commandType: CommandType.Text);
+
                 return true;
             }
             catch (Exception)
@@ -55,71 +45,87 @@ namespace Azki.Data.Implements
 
         public List<User> findAll()
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "select * from [dbo].[User]";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<User>)res;
+            var query = "SELECT [UserId]" +
+                        ",[Name]," +
+                        "[Family]," +
+                        "[UserName]," +
+                        "[Password]," +
+                        "[NationalCode]," +
+                        "[InvitationCode]," +
+                        "[InvitationCodeUsageNumber]" +
+                        "FROM [dbo].[Users]";
+
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+            return data.Read<User>().ToList();
         }
 
         public User findById(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[User] where UserId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (User)res;
+
+            var query = "SELECT [UserId]" +
+                 ",[Name]," +
+                 "[Family]," +
+                 "[UserName]," +
+                 "[Password]," +
+                 "[NationalCode]," +
+                 "[InvitationCode]," +
+                 "[InvitationCodeUsageNumber]" +
+                 $"FROM [dbo].[Users]  where UserId = {id}";
+
+            var data = Connection.Query<User>(query);
+
+            return data.SingleOrDefault();
         }
 
         public List<User> findByIDs(List<int> ids)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[User] where UserId in ({ids})";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<User>)res;
+            var query = "SELECT [UserId]" +
+             ",[Name]," +
+             "[Family]," +
+             "[UserName]," +
+             "[Password]," +
+             "[NationalCode]," +
+             "[InvitationCode]," +
+             "[InvitationCodeUsageNumber]" +
+             $"FROM [dbo].[Users]  where UserId = {ids}";
+
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+
+            return data.Read<User>().ToList();
         }
 
         public User save(User E)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
+            var query = "";
             if (E.UserId == 0)
             {
-
-            cmd.CommandText = $"INSERT INTO [dbo].[Users]([Name],[Family],[UserName],[Password],[NationalCode]," +
-                              $"[CreateDate],[InvitationCode],[InvitationCodeUsageNumber])" +
-                               $"VALUES({E.Name},{E.Family},{E.UserName},{E.Password},{E.NationalCode}," +
-                               $"{E.CreateDate},{E.InvitationCode},{E.InvitationCodeUsageNumber})" +
-                               $"SELECT * from [dbo].[User] where UserId = scope_identity()";
+                query = $"INSERT INTO [dbo].[Users]([Name],[Family],[UserName],[Password],[NationalCode]," +
+                                  $"[InvitationCode],[InvitationCodeUsageNumber])" +
+                                   $"VALUES(N'{E.Name}',N'{E.Family}',N'{E.UserName}',N'{E.Password}',N'{E.NationalCode}'," +
+                                   $"N'{E.InvitationCode}',{E.InvitationCodeUsageNumber})" +
+                                   $"SELECT * from [dbo].[Users] where UserId = scope_identity()";
             }
             else
             {
-                    
-            cmd.CommandText = $"UPDATE [dbo].[Users]" +
-                    $"SET [Name] = {E.Name},[Family] = {E.Family}" +
-                    $",[UserName] = {E.UserName},[Password] = {E.Password}" +
-                    $",[NationalCode] = {E.NationalCode},[CreateDate] = {E.CreateDate}" +
-                    $",[InvitationCode] = {E.InvitationCode}" +
-                    $",[InvitationCodeUsageNumber] = {E.InvitationCodeUsageNumber}" +
-                    $"WHERE UserId = {E.UserId}" +
-                               $"SELECT * from [dbo].[User] where UserId = scope_identity()";
+                query = $"UPDATE [dbo].[Users]" +
+                        $"SET [Name] = N'{E.Name}',[Family] = N'{E.Family}'" +
+                        $",[UserName] = N'{E.UserName}',[Password] = N'{E.Password}'" +
+                        $",[NationalCode] = N'{E.NationalCode}'" +
+                        $",[InvitationCode] = N'{E.InvitationCode}'" +
+                        $",[InvitationCodeUsageNumber] = {E.InvitationCodeUsageNumber}" +
+                        $"WHERE UserId = {E.UserId}" +
+                        $"SELECT [UserId]" +
+                        ",[Name]," +
+                        "[Family]," +
+                        "[UserName]," +
+                        "[Password]," +
+                        "[NationalCode]," +
+                        "[InvitationCode]," +
+                        "[InvitationCodeUsageNumber]  " +
+                        $"from [dbo].[Users] where UserId = {E.UserId}";
             }
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-
-            return (User)res;
+            var data = Connection.Query<User>(query, null, commandType: CommandType.Text);
+            return data.SingleOrDefault();
         }
     }
 }

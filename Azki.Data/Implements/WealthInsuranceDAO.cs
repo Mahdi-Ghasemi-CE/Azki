@@ -1,6 +1,8 @@
 ﻿using Azki.Data.Interfaces;
+using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -12,13 +14,9 @@ namespace Azki.Data.Implements
     {
         public bool deleteByID(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"delete from [dbo].[WealthInsurance] where WealthInsuranceId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            cmd.ExecuteNonQuery();
-            Connection.Close();
+
+            var query = $"delete from [dbo].[WealthInsurance] where WealthInsuranceId = {id}";
+            var data = Connection.Query(query, null, commandType: CommandType.Text);
 
             try
             {
@@ -37,13 +35,9 @@ namespace Azki.Data.Implements
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"delete from [dbo].[WealthInsurance] where WealthInsuranceId in ({ids})";
-                cmd.Connection = Connection;
-                Connection.Open();
-                cmd.ExecuteNonQuery();
-                Connection.Close();
+                var query = $"delete from [dbo].[WealthInsurance] where WealthInsuranceId in ({ids})";
+
+                var data = Connection.Query(query, null, commandType: CommandType.Text);
                 return true;
             }
             catch (Exception)
@@ -55,71 +49,76 @@ namespace Azki.Data.Implements
 
         public List<WealthInsurance> findAll()
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "select * from [dbo].[WealthInsurance]";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<WealthInsurance>)res;
+            var query =
+                "SELECT [WealthInsuranceId],[InsuranceId]," +
+                "[WealthValue],[ProvinceName],[CityName]," +
+                "[WealthInsuranceTypeId],[Meterage],[BuildingAge]," +
+                "[RoofNumbers],[WealthTypeId],[ValuePerMeter]" +
+                " FROM [dbo].[WealthInsurance]";
+
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+
+            return data.Read<WealthInsurance>().ToList();
         }
 
         public WealthInsurance findById(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[WealthInsurance] where WealthInsuranceId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (WealthInsurance)res;
+            var query =
+                "SELECT [WealthInsuranceId],[InsuranceId]," +
+                "[WealthValue],[ProvinceName],[CityName]," +
+                "[WealthInsuranceTypeId],[Meterage],[BuildingAge]," +
+                "[RoofNumbers],[WealthTypeId],[ValuePerMeter]" +
+                $" FROM [dbo].[WealthInsurance] where WealthInsuranceId = {id}";
+
+            var data = Connection.Query<WealthInsurance>(query);
+
+            return data.SingleOrDefault();
         }
 
         public List<WealthInsurance> findByIDs(List<int> ids)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[WealthInsurance] where WealthInsuranceId in ({ids})";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<WealthInsurance>)res;
+            var query =
+                "SELECT [WealthInsuranceId],[InsuranceId]," +
+                "[WealthValue],[ProvinceName],[CityName]," +
+                "[WealthInsuranceTypeId],[Meterage],[BuildingAge]," +
+                "[RoofNumbers],[WealthTypeId],[ValuePerMeter]" +
+                $" FROM [dbo].[WealthInsurance] where WealthInsuranceId in ({ids})";
+
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+
+            return data.Read<WealthInsurance>().ToList();
         }
 
         public WealthInsurance save(WealthInsurance E)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-
+            var query = "";
             if (E.WealthInsuranceId == 0)
             {
-                cmd.CommandText = $"INSERT INTO [dbo].[WealthInsurance]([InsuranceId],[WealthValue],[ProvinceName]," +
+                query = $"INSERT INTO [dbo].[WealthInsurance]([InsuranceId],[WealthValue],[ProvinceName]," +
                     $"[CityName],[WealthInsuranceTypeId],[Meterage],[BuildingAge],[RoofNumbers],[WealthTypeId],[ValuePerMeter])" +
-                                   $"VALUES({E.InsuranceId},{E.WealthValue},{E.ProvinceName}" +
-                                   $",{E.CityName},{E.WealthInsuranceTypeId},{E.Meterage},{E.BuildingAge},{E.RoofNumbers},{E.WealthTypeId},{E.ValuePerMeter})" +
+                                   $"VALUES({E.InsuranceId},{E.WealthValue},N'{E.ProvinceName}'" +
+                                   $",N'{E.CityName}',{E.WealthInsuranceTypeId},{E.Meterage},{E.BuildingAge},{E.RoofNumbers},{E.WealthTypeId},{E.ValuePerMeter})" +
                                    $"SELECT * from [dbo].[WealthInsurance] where WealthInsuranceId = scope_identity()";
             }
             else
             {
-                cmd.CommandText = $"UPDATE [dbo].[WealthInsurance]" +
+                query = $"UPDATE [dbo].[WealthInsurance]" +
                     $"SET [InsuranceId] = {E.InsuranceId},[WealthValue] = {E.WealthValue}," +
-                    $"[ProvinceName] = {E.ProvinceName},[CityName] = {E.CityName}," +
+                    $"[ProvinceName] = N'{E.ProvinceName}',[CityName] = N'{E.CityName}'," +
                     $"[WealthInsuranceTypeId] = {E.WealthInsuranceTypeId}," +
                     $"[Meterage] = {E.Meterage},[BuildingAge] = {E.BuildingAge}," +
                     $"[RoofNumbers] = {E.RoofNumbers},[WealthTypeId] = {E.WealthTypeId}," +
                     $"[ValuePerMeter] = {E.ValuePerMeter}" +
                     $"WHERE WealthInsuranceId = {E.WealthInsuranceId}" +
-                                   $"SELECT * from [dbo].[WealthInsurance] where WealthInsuranceId = scope_identity()";
+                    "SELECT [WealthInsuranceId],[InsuranceId]," +
+                    "[WealthValue],[ProvinceName],[CityName]," +
+                    "[WealthInsuranceTypeId],[Meterage],[BuildingAge]," +
+                    "[RoofNumbers],[WealthTypeId],[ValuePerMeter]" +
+                    $" FROM [dbo].[WealthInsurance] where WealthInsuranceId = {E.WealthInsuranceId}";
             }
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
 
-            return (WealthInsurance)res;
+            var data = Connection.Query<WealthInsurance>(query, null, commandType: CommandType.Text);
+            return data.SingleOrDefault();
         }
     }
 }

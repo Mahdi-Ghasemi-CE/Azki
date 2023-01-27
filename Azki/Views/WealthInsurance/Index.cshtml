@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Azki.Data.WealthInsurance>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.InsuranceId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WealthValue)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProvinceName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WealthInsuranceTypeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Meterage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BuildingAge)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RoofNumbers)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WealthTypeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValuePerMeter)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.InsuranceId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WealthValue)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProvinceName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CityName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WealthInsuranceTypeId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Meterage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BuildingAge)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RoofNumbers)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WealthTypeId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ValuePerMeter)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.WealthInsuranceId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.WealthInsuranceId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.WealthInsuranceId })
+        </td>
+    </tr>
+}
+
+</table>

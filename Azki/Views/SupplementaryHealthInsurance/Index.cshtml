@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Azki.Data.SupplementaryHealthInsurance>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TypeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PersonalInsuranceId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BaseInsuranceId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.number)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TypeId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PersonalInsuranceId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BaseInsuranceId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.number)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.SupplementaryHealthInsuranceId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.SupplementaryHealthInsuranceId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.SupplementaryHealthInsuranceId })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,6 +1,8 @@
 ﻿using Azki.Data.Interfaces;
+using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -12,14 +14,8 @@ namespace Azki.Data.Implements
     {
         public bool deleteByID(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"delete from [dbo].[Reminder] where ReminderId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            cmd.ExecuteNonQuery();
-            Connection.Close();
-
+            var query = $"delete from [dbo].[Reminder] where ReminderId = {id}";
+            var data = Connection.Query(query, null, commandType: CommandType.Text);
             try
             {
                 var model = findById(id);
@@ -37,13 +33,8 @@ namespace Azki.Data.Implements
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"delete from [dbo].[Reminder] where ReminderId in ({ids})";
-                cmd.Connection = Connection;
-                Connection.Open();
-                cmd.ExecuteNonQuery();
-                Connection.Close();
+                var query = $"delete from [dbo].[Reminder] where ReminderId in ({ids})";
+                var data = Connection.Query(query, null, commandType: CommandType.Text);
                 return true;
             }
             catch (Exception)
@@ -55,64 +46,60 @@ namespace Azki.Data.Implements
 
         public List<Reminder> findAll()
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "select * from [dbo].[Reminder]";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<Reminder>)res;
+            var query = "SELECT [ReminderId]" +
+                ",[UserId]" +
+                ",[InsuranceId]" +
+                ",[Date]" +
+                "FROM [dbo].[Reminder]";
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+            return data.Read<Reminder>().ToList();
         }
 
         public Reminder findById(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[Reminder] where ReminderId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (Reminder)res;
+            var query = "SELECT [ReminderId]" +
+                ",[UserId]" +
+                ",[InsuranceId]" +
+                ",[Date]" +
+                $"FROM [dbo].[Reminder] where ReminderId = {id}";
+            var data = Connection.Query<Reminder>(query);
+            return data.SingleOrDefault();
         }
 
         public List<Reminder> findByIDs(List<int> ids)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[Reminder] where ReminderId in ({ids})";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<Reminder>)res;
+            var query = "SELECT [ReminderId]" +
+                ",[UserId]" +
+                ",[InsuranceId]" +
+                ",[Date]" +
+                $"FROM [dbo].[Reminder] where InsuranceCompanyId in ({ids})";
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+            return data.Read<Reminder>().ToList();
         }
 
         public Reminder save(Reminder E)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
+            var query = "";
             if (E.ReminderId == 0)
             {
-                cmd.CommandText = $"INSERT INTO [dbo].[Reminder]([UserId],[InsuranceId],[Date])" +
+                query = $"INSERT INTO [dbo].[Reminder]([UserId],[InsuranceId],[Date])" +
                                    $"VALUES ({E.UserId},{E.InsuranceId},{E.Date})" +
                                    $"SELECT * from [dbo].[Reminder] where ReminderId = scope_identity()";
             }
             else
             {
-                cmd.CommandText = $"UPDATE [dbo].[Reminder]" +
+                query = $"UPDATE [dbo].[Reminder]" +
                                     $"SET [UserId] = {E.UserId},[InsuranceId] = {E.InsuranceId}" +
                                     $",[Date] = {E.Date}" +
                                     $"WHERE ReminderId = {E.ReminderId}" +
-                                   $"SELECT * from [dbo].[Reminder] where ReminderId = scope_identity()";
+                                    "SELECT [ReminderId]" +
+                                    ",[UserId]" +
+                                    ",[InsuranceId]" +
+                                    ",[Date]" +
+                                    $"FROM [dbo].[Reminder] where ReminderId = {E.ReminderId}";
             }
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-
-            return (Reminder)res;
+            var data = Connection.Query<Reminder>(query, null, commandType: CommandType.Text);
+            return data.SingleOrDefault();
         }
     }
 }

@@ -17,7 +17,6 @@
         <EntityTypeShape EntityType="Azki_DBModel.SupplementaryHealthInsurance" Width="1.5" PointX="7.5" PointY="16.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Azki_DBModel.SupplementaryHealthInsuranceUser" Width="1.5" PointX="7.5" PointY="19.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Azki_DBModel.sysdiagram" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="Azki_DBModel.User" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Azki_DBModel.WealthInsurance" Width="1.5" PointX="5.25" PointY="21.75" IsExpanded="true" />
         <AssociationConnector Association="Azki_DBModel.FK_Insurance_InsuranceCompany" ManuallyRouted="false" />
         <AssociationConnector Association="Azki_DBModel.FK_PaiedInsurance_Insurance" ManuallyRouted="false" />
@@ -25,14 +24,15 @@
         <AssociationConnector Association="Azki_DBModel.FK_Reminder_Insurance" ManuallyRouted="false" />
         <AssociationConnector Association="Azki_DBModel.FK_WealthInsurance_InsuranceId" ManuallyRouted="false" />
         <AssociationConnector Association="Azki_DBModel.FK_LifeInsurance_PersonalInsurance" ManuallyRouted="false" />
-        <AssociationConnector Association="Azki_DBModel.FK_PaiedInsurance_User" ManuallyRouted="false" />
         <AssociationConnector Association="Azki_DBModel.FK_Place_PaiedInsurance" ManuallyRouted="false" />
         <AssociationConnector Association="Azki_DBModel.FK_SupplementaryHealthInsuranceUser_PaiedInsurance" ManuallyRouted="false" />
         <AssociationConnector Association="Azki_DBModel.FK_SupplementaryHealthInsurance_PersonalInsurance" ManuallyRouted="false" />
-        <AssociationConnector Association="Azki_DBModel.FK_Reminder_Users" ManuallyRouted="false" />
         <AssociationConnector Association="Azki_DBModel.FK_SicknessCoverage_SicknessCoverageTypes" ManuallyRouted="false" />
         <AssociationConnector Association="Azki_DBModel.FK_SicknessCoverage_SupplementaryHealthInsurance" ManuallyRouted="false" />
         <AssociationConnector Association="Azki_DBModel.FK_SicknessCoverage_SicknessCoverageTypes1" />
+        <EntityTypeShape EntityType="Azki_DBModel.User" Width="1.5" PointX="0.75" PointY="6.5" />
+        <AssociationConnector Association="Azki_DBModel.FK_PaiedInsurance_User" />
+        <AssociationConnector Association="Azki_DBModel.FK_Reminder_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

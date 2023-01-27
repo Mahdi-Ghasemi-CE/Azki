@@ -1,0 +1,104 @@
+﻿@model Azki.Data.WealthInsurance
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>WealthInsurance</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.InsuranceId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InsuranceId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WealthValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WealthValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProvinceName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProvinceName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CityName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WealthInsuranceTypeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WealthInsuranceTypeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Meterage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Meterage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BuildingAge)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BuildingAge)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RoofNumbers)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RoofNumbers)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WealthTypeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WealthTypeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ValuePerMeter)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ValuePerMeter)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

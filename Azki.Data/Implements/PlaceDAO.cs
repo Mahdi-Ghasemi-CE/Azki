@@ -1,25 +1,18 @@
 ﻿using Azki.Data.Interfaces;
+using Dapper;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Azki.Data.Implements
 {
-    public class PlaceDAO:BaseRepository,Repository<Place,int>
+    public class PlaceDAO : BaseRepository, Repository<Place, int>
     {
         public bool deleteByID(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"delete from [dbo].[Place] where PlaceId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            cmd.ExecuteNonQuery();
-            Connection.Close();
-
+            var query = $"delete from [dbo].[Place] where PlaceId = {id}";
+            var data = Connection.Query(query, null, commandType: CommandType.Text);
             try
             {
                 var model = findById(id);
@@ -37,13 +30,8 @@ namespace Azki.Data.Implements
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"delete from [dbo].[Place] where PlaceId in ({ids})";
-                cmd.Connection = Connection;
-                Connection.Open();
-                cmd.ExecuteNonQuery();
-                Connection.Close();
+                var query = $"delete from [dbo].[Place] where PlaceId in ({ids})";
+                var data = Connection.Query(query, null, commandType: CommandType.Text);
                 return true;
             }
             catch (Exception)
@@ -55,65 +43,77 @@ namespace Azki.Data.Implements
 
         public List<Place> findAll()
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "select * from [dbo].[Place]";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<Place>)res;
+            var query = "SELECT [PlaceId]" +
+                ",[Address]" +
+                ",[PostalCode]" +
+                ",[Roof]" +
+                ",[Phone]" +
+                ",[Plate]" +
+                ",[Unit]" +
+                ",[PaiedInsuranceId]" +
+                "FROM [dbo].[Place]";
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+            return data.Read<Place>().ToList();
         }
 
         public Place findById(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[Place] where PlaceId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (Place)res;
+            var query = "SELECT [PlaceId]" +
+                 ",[Address]" +
+                 ",[PostalCode]" +
+                 ",[Roof]" +
+                 ",[Phone]" +
+                 ",[Plate]" +
+                 ",[Unit]" +
+                 ",[PaiedInsuranceId]" +
+                 $"FROM [dbo].[Place] where PlaceId = {id}";
+            var data = Connection.Query<Place>(query);
+            return data.SingleOrDefault();
         }
 
         public List<Place> findByIDs(List<int> ids)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[Place] where PlaceId in ({ids})";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<Place>)res;
+            var query = "SELECT [PlaceId]" +
+                ",[Address]" +
+                ",[PostalCode]" +
+                ",[Roof]" +
+                ",[Phone]" +
+                ",[Plate]" +
+                ",[Unit]" +
+                ",[PaiedInsuranceId]" +
+                $"FROM [dbo].[Place] where PlaceId in ({ids})";
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+            return data.Read<Place>().ToList();
         }
 
         public Place save(Place E)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
+            var query = "";
             if (E.PlaceId == 0)
             {
-            cmd.CommandText = $"INSERT INTO [dbo].[Place]([Address],[PostalCode],[Roof],[Phone],[Plate],[Unit],[PaiedInsuranceId])" +
-                               $"VALUES({E.Address},{E.PostalCode},{E.Roof},{E.Phone},{E.Plate},{E.Unit},{E.PaiedInsuranceId})" +
-                               $"SELECT * from [dbo].[Place] where PlaceId = scope_identity()";
+                query = $"INSERT INTO [dbo].[Place]([Address],[PostalCode],[Roof],[Phone],[Plate],[Unit],[PaiedInsuranceId])" +
+                                   $"VALUES(N'{E.Address}',{E.PostalCode},{E.Roof},N'{E.Phone}',{E.Plate},{E.Unit},{E.PaiedInsuranceId})" +
+                                   $"SELECT * from [dbo].[Place] where PlaceId = scope_identity()";
             }
             else
             {
-            cmd.CommandText = $"UPDATE [dbo].[Place]" +
-                    $" SET [Address] = {E.Address},[PostalCode] = {E.PostalCode}" +
-                    $",[Roof] = {E.Roof},[Phone] = {E.Phone},[Plate] = {E.Plate}" +
-                    $",[Unit] = {E.Unit},[PaiedInsuranceId] = {E.PaiedInsuranceId}" +
-                    $"WHERE PlaceId = {E.PlaceId}" +
-                               $"SELECT * from [dbo].[Place] where PlaceId = scope_identity()";
+                query = $"UPDATE [dbo].[Place]" +
+                        $" SET [Address] =N'{E.Address}',[PostalCode] = {E.PostalCode}" +
+                        $",[Roof] = {E.Roof},[Phone] = N'{E.Phone}',[Plate] = {E.Plate}" +
+                        $",[Unit] = {E.Unit},[PaiedInsuranceId] = {E.PaiedInsuranceId}" +
+                        $"WHERE PlaceId = {E.PlaceId}" + 
+                        "SELECT [PlaceId]" +
+                        ",[Address]" +
+                        ",[PostalCode]" +
+                        ",[Roof]" +
+                        ",[Phone]" +
+                        ",[Plate]" +
+                        ",[Unit]" +
+                        ",[PaiedInsuranceId]" +
+                        $"FROM [dbo].[Place] where PlaceId = {E.PlaceId}";
             }
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-
-            return (Place)res;
+            var data = Connection.Query<Place>(query, null, commandType: CommandType.Text);
+            return data.SingleOrDefault();
         }
     }
 }

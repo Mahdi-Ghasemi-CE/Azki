@@ -1,6 +1,8 @@
 ﻿using Azki.Data.Interfaces;
+using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -12,14 +14,8 @@ namespace Azki.Data.Implements
     {
         public bool deleteByID(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"delete from [dbo].[SicknessCoverageType] where SicknessCoverageTypeId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            cmd.ExecuteNonQuery();
-            Connection.Close();
-
+            var query = $"delete from [dbo].[SicknessCoverageType] where SicknessCoverageTypeId = {id}";
+            var data = Connection.Query(query, null, commandType: CommandType.Text);
             try
             {
                 var model = findById(id);
@@ -37,13 +33,8 @@ namespace Azki.Data.Implements
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"delete from [dbo].[SicknessCoverageType] where SicknessCoverageTypeId in ({ids})";
-                cmd.Connection = Connection;
-                Connection.Open();
-                cmd.ExecuteNonQuery();
-                Connection.Close();
+                var query = $"delete from [dbo].[SicknessCoverageType] where SicknessCoverageTypeId in ({ids})";
+                var data = Connection.Query(query, null, commandType: CommandType.Text);
                 return true;
             }
             catch (Exception)
@@ -55,63 +46,51 @@ namespace Azki.Data.Implements
 
         public List<SicknessCoverageType> findAll()
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "select * from [dbo].[SicknessCoverageType]";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<SicknessCoverageType>)res;
+            var query = "SELECT [SicknessCoverageTypesId]" +
+                ",[Title]" +
+                "FROM [dbo].[SicknessCoverageTypes]";
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+            return data.Read<SicknessCoverageType>().ToList();
         }
 
         public SicknessCoverageType findById(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[SicknessCoverageType] where SicknessCoverageTypeId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (SicknessCoverageType)res;
+            var query = "SELECT [SicknessCoverageTypesId]" +
+                        ",[Title]" +
+                        $"FROM [dbo].[SicknessCoverageTypes] where InsuranceCompanyId = {id}";
+            var data = Connection.Query<SicknessCoverageType>(query);
+            return data.SingleOrDefault();
         }
 
         public List<SicknessCoverageType> findByIDs(List<int> ids)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[SicknessCoverageType] where SicknessCoverageTypeId in ({ids})";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<SicknessCoverageType>)res;
+            var query = "SELECT [SicknessCoverageTypesId]" +
+                                    ",[Title]" +
+                                    $"FROM [dbo].[SicknessCoverageTypes] where SicknessCoverageTypeId in ({ids})";
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+            return data.Read<SicknessCoverageType>().ToList();
         }
 
         public SicknessCoverageType save(SicknessCoverageType E)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
+            var query = "";
             if (true)
             {
-                cmd.CommandText = $"INSERT INTO [dbo].[SicknessCoverageTypes]([Title])" +
-                                   $"VALUES ({E.Title})" +
+                query = $"INSERT INTO [dbo].[SicknessCoverageTypes]([Title])" +
+                                   $"VALUES (N'{E.Title})'" +
                                    $"SELECT * from [dbo].[SicknessCoverageType] where SicknessCoverageTypeId = scope_identity()";
             }
             else
             {
-                cmd.CommandText = $"UPDATE [dbo].[SicknessCoverageTypes]" +
-                                    $"SET [Title] = {E.Title}" +
+                query = $"UPDATE [dbo].[SicknessCoverageTypes]" +
+                                    $"SET [Title] = N'{E.Title}'" +
                                     $"WHERE SicknessCoverageTypesId = {E.SicknessCoverageTypesId}" +
-                                   $"SELECT * from [dbo].[SicknessCoverageType] where SicknessCoverageTypeId = scope_identity()";
+                                    "SELECT [SicknessCoverageTypesId]" +
+                                    ",[Title]" +
+                                    $"FROM [dbo].[SicknessCoverageTypes] where SicknessCoverageTypeId = {E.SicknessCoverageTypesId}";
             }
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-
-            return (SicknessCoverageType)res;
+            var data = Connection.Query<SicknessCoverageType>(query, null, commandType: CommandType.Text);
+            return data.SingleOrDefault();
         }
     }
 }

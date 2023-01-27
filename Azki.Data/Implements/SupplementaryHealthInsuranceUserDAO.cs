@@ -1,10 +1,13 @@
 ﻿using Azki.Data.Interfaces;
+using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Azki.Data.Implements
 {
@@ -12,14 +15,9 @@ namespace Azki.Data.Implements
     {
         public bool deleteByID(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"delete from [dbo].[SupplementaryHealthInsuranceUser] where SupplementaryHealthInsuranceUserId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            cmd.ExecuteNonQuery();
-            Connection.Close();
 
+            var query = $"delete from [dbo].[SupplementaryHealthInsuranceUser] where SupplementaryHealthInsuranceUserId = {id}";
+            var data = Connection.Query(query, null, commandType: CommandType.Text);
             try
             {
                 var model = findById(id);
@@ -37,13 +35,9 @@ namespace Azki.Data.Implements
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"delete from [dbo].[SupplementaryHealthInsuranceUser] where SupplementaryHealthInsuranceUserId in ({ids})";
-                cmd.Connection = Connection;
-                Connection.Open();
-                cmd.ExecuteNonQuery();
-                Connection.Close();
+                var query = $"delete from [dbo].[SupplementaryHealthInsuranceUser] " +
+                    $"where SupplementaryHealthInsuranceUserId in ({ids})";
+                var data = Connection.Query(query, null, commandType: CommandType.Text);
                 return true;
             }
             catch (Exception)
@@ -55,64 +49,61 @@ namespace Azki.Data.Implements
 
         public List<SupplementaryHealthInsuranceUser> findAll()
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "select * from [dbo].[SupplementaryHealthInsuranceUser]";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<SupplementaryHealthInsuranceUser>)res;
+            var query = "SELECT [SupplementaryHealthInsuranceUserId]" +
+                ",[AgeRange]" +
+                ",[RelationshipWithSupervisor]" +
+                ",[PaiedInsuranceId]" +
+                "FROM [dbo].[SupplementaryHealthInsuranceUser]";
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+            return data.Read<SupplementaryHealthInsuranceUser>().ToList();
         }
 
         public SupplementaryHealthInsuranceUser findById(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[SupplementaryHealthInsuranceUser] where SupplementaryHealthInsuranceUserId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (SupplementaryHealthInsuranceUser)res;
+            var query = "SELECT [SupplementaryHealthInsuranceUserId]" +
+                ",[AgeRange]" +
+                ",[RelationshipWithSupervisor]" +
+                ",[PaiedInsuranceId]" +
+                "FROM [dbo].[SupplementaryHealthInsuranceUser] " +
+                $"where SupplementaryHealthInsuranceUserId = {id}";
+            var data = Connection.Query<SupplementaryHealthInsuranceUser>(query);
+            return data.SingleOrDefault();
         }
 
         public List<SupplementaryHealthInsuranceUser> findByIDs(List<int> ids)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[SupplementaryHealthInsuranceUser] where SupplementaryHealthInsuranceUserId in ({ids})";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<SupplementaryHealthInsuranceUser>)res;
+            var query = "SELECT [SupplementaryHealthInsuranceUserId]" +
+                ",[AgeRange]" +
+                ",[RelationshipWithSupervisor]" +
+                ",[PaiedInsuranceId]" +
+                $"FROM [dbo].[SupplementaryHealthInsuranceUser] where SupplementaryHealthInsuranceUserId in ({ids})";
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+            return data.Read<SupplementaryHealthInsuranceUser>().ToList();
         }
 
         public SupplementaryHealthInsuranceUser save(SupplementaryHealthInsuranceUser E)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
+            var query = "";
             if (E.SupplementaryHealthInsuranceUserId == 0)
             {
-                cmd.CommandText = $"INSERT INTO [dbo].[SupplementaryHealthInsuranceUser]([AgeRange],[RelationshipWithSupervisor],[PaiedInsuranceId])" +
+                query = $"INSERT INTO [dbo].[SupplementaryHealthInsuranceUser]([AgeRange],[RelationshipWithSupervisor],[PaiedInsuranceId])" +
                                    $"VALUES({E.AgeRange},{E.RelationshipWithSupervisor},{E.PaiedInsuranceId})" +
                                    $"SELECT * from [dbo].[SupplementaryHealthInsuranceUser] where SupplementaryHealthInsuranceUserId = scope_identity()";
             }
             else
             {
-                cmd.CommandText = $"UPDATE [dbo].[SupplementaryHealthInsuranceUser]" +
+                query = $"UPDATE [dbo].[SupplementaryHealthInsuranceUser]" +
                     $"SET [AgeRange] = {E.AgeRange},[RelationshipWithSupervisor] = {E.RelationshipWithSupervisor}" +
                     $",[PaiedInsuranceId] = {E.PaiedInsuranceId}" +
-                    $"WHERE SupplementaryHealthInsuranceUserId = {E.SupplementaryHealthInsuranceUserId}" +
-                                    $"SELECT * from [dbo].[SupplementaryHealthInsuranceUser] where SupplementaryHealthInsuranceUserId = scope_identity()";
+                    $"WHERE SupplementaryHealthInsuranceUserId = {E.SupplementaryHealthInsuranceUserId}" + "SELECT [SupplementaryHealthInsuranceUserId]" +
+                ",[AgeRange]" +
+                ",[RelationshipWithSupervisor]" +
+                ",[PaiedInsuranceId]" +
+                "FROM [dbo].[SupplementaryHealthInsuranceUser] " +
+                $"where SupplementaryHealthInsuranceUserId = {E.SupplementaryHealthInsuranceUserId}";
             }
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-
-            return (SupplementaryHealthInsuranceUser)res;
+            var data = Connection.Query<SupplementaryHealthInsuranceUser>(query, null, commandType: CommandType.Text);
+            return data.SingleOrDefault();
         }
     }
 }

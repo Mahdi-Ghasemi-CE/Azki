@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Azki.Data.Insurance>
+
+@{
+    ViewBag.Title = "بیمه ها";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OfferName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContractTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InsuranceCompanyId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DiscountPercent)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.OfferName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContractTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InsuranceCompanyId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DiscountPercent)
+        </td>
+        <td>
+            @Html.ActionLink("ویرایش", "Edit", new { id=item.InsuranceId }) |
+            @Html.ActionLink("جزئیات", "Details", new { id=item.InsuranceId }) |
+            @Html.ActionLink("حذف", "Delete", new { id=item.InsuranceId })
+        </td>
+    </tr>
+}
+
+</table>

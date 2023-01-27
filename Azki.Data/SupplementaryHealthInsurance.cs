@@ -24,6 +24,7 @@ namespace Azki.Data
         public int TypeId { get; set; }
         public int PersonalInsuranceId { get; set; }
         public int BaseInsuranceId { get; set; }
+        public int number { get; set; }
     
         public virtual PersonalInsurance PersonalInsurance { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -99,6 +99,7 @@
           <Property Name="TypeId" Type="int" Nullable="false" />
           <Property Name="PersonalInsuranceId" Type="int" Nullable="false" />
           <Property Name="BaseInsuranceId" Type="int" Nullable="false" />
+          <Property Name="number" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SupplementaryHealthInsuranceUser">
           <Key>
@@ -129,7 +130,6 @@
           <Property Name="UserName" Type="varchar" MaxLength="90" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="90" Nullable="false" />
           <Property Name="NationalCode" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="InvitationCode" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="InvitationCodeUsageNumber" Type="int" Nullable="false" />
         </EntityType>
@@ -313,7 +313,8 @@
           <Parameter Name="second_insurance" Type="int" Mode="In" />
         </Function>
         <Function Name="spUpdateInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="year_Contract" Type="int" Mode="In" />
+          <Parameter Name="Y" Type="int" Mode="In" />
+          <Parameter Name="baseInsurance" Type="int" Mode="In" />
         </Function>
         <Function Name="spuserCompanyInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="InsuranceCompanyName" Type="nvarchar" Mode="In" />
@@ -448,9 +449,9 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Point" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Insurance" Relationship="Self.FK_PaiedInsurance_Insurance" FromRole="PaiedInsurance" ToRole="Insurance" />
-          <NavigationProperty Name="User" Relationship="Self.FK_PaiedInsurance_User" FromRole="PaiedInsurance" ToRole="Users" />
           <NavigationProperty Name="Places" Relationship="Self.FK_Place_PaiedInsurance" FromRole="PaiedInsurance" ToRole="Place" />
           <NavigationProperty Name="SupplementaryHealthInsuranceUsers" Relationship="Self.FK_SupplementaryHealthInsuranceUser_PaiedInsurance" FromRole="PaiedInsurance" ToRole="SupplementaryHealthInsuranceUser" />
+          <NavigationProperty Name="User" Relationship="Azki_DBModel.FK_PaiedInsurance_User" FromRole="PaiedInsurance" ToRole="User" />
         </EntityType>
         <EntityType Name="PersonalInsurance">
           <Key>
@@ -487,7 +488,7 @@
           <Property Name="InsuranceId" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Insurance" Relationship="Self.FK_Reminder_Insurance" FromRole="Reminder" ToRole="Insurance" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Reminder_Users" FromRole="Reminder" ToRole="Users" />
+          <NavigationProperty Name="User" Relationship="Azki_DBModel.FK_Reminder_Users" FromRole="Reminder" ToRole="User" />
         </EntityType>
         <EntityType Name="SicknessCoverage">
           <Key>
@@ -520,6 +521,7 @@
           <NavigationProperty Name="PersonalInsurance" Relationship="Self.FK_SupplementaryHealthInsurance_PersonalInsurance" FromRole="SupplementaryHealthInsurance" ToRole="PersonalInsurance" />
           <NavigationProperty Name="SicknessCoverages" Relationship="Self.FK_SicknessCoverage_SupplementaryHealthInsurance" FromRole="SupplementaryHealthInsurance" ToRole="SicknessCoverage" />
           <Property Name="BaseInsuranceId" Type="Int32" Nullable="false" />
+          <Property Name="number" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="SupplementaryHealthInsuranceUser">
           <Key>
@@ -540,22 +542,6 @@
           <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Family" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="90" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="90" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="NationalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="InvitationCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="InvitationCodeUsageNumber" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="PaiedInsurances" Relationship="Self.FK_PaiedInsurance_User" FromRole="Users" ToRole="PaiedInsurance" />
-          <NavigationProperty Name="Reminders" Relationship="Self.FK_Reminder_Users" FromRole="Users" ToRole="Reminder" />
         </EntityType>
         <EntityType Name="WealthInsurance">
           <Key>
@@ -646,18 +632,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PaiedInsurance_User">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="PaiedInsurance" Type="Self.PaiedInsurance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="PaiedInsurance">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Place_PaiedInsurance">
           <End Role="PaiedInsurance" Type="Self.PaiedInsurance" Multiplicity="1" />
           <End Role="Place" Type="Self.Place" Multiplicity="*" />
@@ -691,18 +665,6 @@
             </Principal>
             <Dependent Role="SupplementaryHealthInsurance">
               <PropertyRef Name="PersonalInsuranceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Reminder_Users">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="Reminder" Type="Self.Reminder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Reminder">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -743,7 +705,6 @@
           <EntitySet Name="SupplementaryHealthInsurances" EntityType="Self.SupplementaryHealthInsurance" />
           <EntitySet Name="SupplementaryHealthInsuranceUsers" EntityType="Self.SupplementaryHealthInsuranceUser" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="WealthInsurances" EntityType="Self.WealthInsurance" />
           <AssociationSet Name="FK_Insurance_InsuranceCompany" Association="Self.FK_Insurance_InsuranceCompany">
             <End Role="InsuranceCompany" EntitySet="InsuranceCompanies" />
@@ -769,10 +730,6 @@
             <End Role="PersonalInsurance" EntitySet="PersonalInsurances" />
             <End Role="LifeInsurance" EntitySet="LifeInsurances" />
           </AssociationSet>
-          <AssociationSet Name="FK_PaiedInsurance_User" Association="Self.FK_PaiedInsurance_User">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="PaiedInsurance" EntitySet="PaiedInsurances" />
-          </AssociationSet>
           <AssociationSet Name="FK_Place_PaiedInsurance" Association="Self.FK_Place_PaiedInsurance">
             <End Role="PaiedInsurance" EntitySet="PaiedInsurances" />
             <End Role="Place" EntitySet="Places" />
@@ -784,10 +741,6 @@
           <AssociationSet Name="FK_SupplementaryHealthInsurance_PersonalInsurance" Association="Self.FK_SupplementaryHealthInsurance_PersonalInsurance">
             <End Role="PersonalInsurance" EntitySet="PersonalInsurances" />
             <End Role="SupplementaryHealthInsurance" EntitySet="SupplementaryHealthInsurances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Reminder_Users" Association="Self.FK_Reminder_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Reminder" EntitySet="Reminders" />
           </AssociationSet>
           <AssociationSet Name="FK_SicknessCoverage_SicknessCoverageTypes" Association="Self.FK_SicknessCoverage_SicknessCoverageTypes">
             <End Role="SicknessCoverageTypes" EntitySet="SicknessCoverageTypes" />
@@ -805,7 +758,8 @@
             <Parameter Name="second_insurance" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spUpdateInsurance">
-          <Parameter Name="year_Contract" Mode="In" Type="Int32" />
+            <Parameter Name="Y" Mode="In" Type="Int32" />
+            <Parameter Name="baseInsurance" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spuserCompanyInsurance" ReturnType="Collection(Azki_DBModel.spuserCompanyInsurance_Result)">
             <Parameter Name="InsuranceCompanyName" Mode="In" Type="String" />
@@ -825,6 +779,15 @@
           <AssociationSet Name="FK_SicknessCoverage_SicknessCoverageTypes1" Association="Azki_DBModel.FK_SicknessCoverage_SicknessCoverageTypes1">
             <End Role="SicknessCoverageType" EntitySet="SicknessCoverageTypes" />
             <End Role="SicknessCoverage" EntitySet="SicknessCoverages" />
+          </AssociationSet>
+          <EntitySet Name="Users" EntityType="Azki_DBModel.User" />
+          <AssociationSet Name="FK_PaiedInsurance_User" Association="Azki_DBModel.FK_PaiedInsurance_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PaiedInsurance" EntitySet="PaiedInsurances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reminder_Users" Association="Azki_DBModel.FK_Reminder_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Reminder" EntitySet="Reminders" />
           </AssociationSet>
         </EntityContainer>
         <ComplexType Name="spNameCompanyAsc_Result">
@@ -874,6 +837,45 @@
             </Principal>
             <Dependent Role="SicknessCoverage">
               <PropertyRef Name="SicknessCoverageTypesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Family" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="90" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="90" FixedLength="false" Unicode="false" />
+          <Property Name="NationalCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="InvitationCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="InvitationCodeUsageNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PaiedInsurances" Relationship="Azki_DBModel.FK_PaiedInsurance_User" FromRole="User" ToRole="PaiedInsurance" />
+          <NavigationProperty Name="Reminders" Relationship="Azki_DBModel.FK_Reminder_Users" FromRole="User" ToRole="Reminder" />
+        </EntityType>
+        <Association Name="FK_PaiedInsurance_User">
+          <End Type="Azki_DBModel.User" Role="User" Multiplicity="1" />
+          <End Type="Azki_DBModel.PaiedInsurance" Role="PaiedInsurance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="PaiedInsurance">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reminder_Users">
+          <End Type="Azki_DBModel.User" Role="User" Multiplicity="1" />
+          <End Type="Azki_DBModel.Reminder" Role="Reminder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Reminder">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -981,6 +983,7 @@
           <EntitySetMapping Name="SupplementaryHealthInsurances">
             <EntityTypeMapping TypeName="Azki_DBModel.SupplementaryHealthInsurance">
               <MappingFragment StoreEntitySet="SupplementaryHealthInsurance">
+                <ScalarProperty Name="number" ColumnName="number" />
                 <ScalarProperty Name="BaseInsuranceId" ColumnName="BaseInsuranceId" />
                 <ScalarProperty Name="SupplementaryHealthInsuranceId" ColumnName="SupplementaryHealthInsuranceId" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
@@ -1006,21 +1009,6 @@
                 <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
                 <ScalarProperty Name="version" ColumnName="version" />
                 <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="Azki_DBModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Family" ColumnName="Family" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="NationalCode" ColumnName="NationalCode" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="InvitationCode" ColumnName="InvitationCode" />
-                <ScalarProperty Name="InvitationCodeUsageNumber" ColumnName="InvitationCodeUsageNumber" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1099,6 +1087,20 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spUserNotOrder" FunctionName="Azki_DBModel.Store.spUserNotOrder" />
           <FunctionImportMapping FunctionImportName="spUserReminder" FunctionName="Azki_DBModel.Store.spUserReminder" />
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Azki_DBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="InvitationCodeUsageNumber" ColumnName="InvitationCodeUsageNumber" />
+                <ScalarProperty Name="InvitationCode" ColumnName="InvitationCode" />
+                <ScalarProperty Name="NationalCode" ColumnName="NationalCode" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Family" ColumnName="Family" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

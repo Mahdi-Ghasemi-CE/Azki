@@ -1,0 +1,26 @@
+﻿@model Azki.Data.InsuranceCompany
+
+@{
+    ViewBag.Title = "جزئیات";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>InsuranceCompany</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.InsuranceCompanyId }) |
+    @Html.ActionLink("بازگشت به لیست ", "Index")
+</p>

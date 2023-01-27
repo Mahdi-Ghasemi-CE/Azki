@@ -1,6 +1,8 @@
 ﻿using Azki.Data.Interfaces;
+using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -10,16 +12,10 @@ namespace Azki.Data.Implements
 {
     public class InsuranceDAO : BaseRepository, Repository<Insurance, int>
     {
-
         public bool deleteByID(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"delete from [dbo].[Insurance] where InsuranceId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            cmd.ExecuteNonQuery();
-            Connection.Close();
+            var query = $"delete from [dbo].[Insurance] where InsuranceId = {id}";
+            var data = Connection.Query(query, null, commandType: CommandType.Text);
 
             try
             {
@@ -38,13 +34,10 @@ namespace Azki.Data.Implements
         {
             try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"delete from [dbo].[Insurance] where InsuranceId in ({ids})";
-                cmd.Connection = Connection;
-                Connection.Open();
-                cmd.ExecuteNonQuery();
-                Connection.Close();
+                var query = $"delete from [dbo].[Insurance] where InsuranceId in ({ids})";
+
+                var data = Connection.Query(query, null, commandType: CommandType.Text);
+
                 return true;
             }
             catch (Exception)
@@ -55,64 +48,51 @@ namespace Azki.Data.Implements
 
         public List<Insurance> findAll()
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "select * from [dbo].[Insurance]";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<Insurance>)res;
+            var query = "SELECT [InsuranceId],[OfferName],[ContractTime] ,[Price] " +
+                ",[InsuranceCompanyId],[DiscountPercent]FROM [dbo].[Insurance]";
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+            return data.Read<Insurance>().ToList();
         }
 
         public Insurance findById(int id)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[Insurance] where InsuranceId = {id}";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (Insurance)res;
+
+            var query = $"SELECT [InsuranceId],[OfferName],[ContractTime] ,[Price] " +
+                $",[InsuranceCompanyId],[DiscountPercent]FROM [dbo].[Insurance] where InsuranceId = {id}";
+
+            var data = Connection.Query<Insurance>(query);
+
+            return data.SingleOrDefault();
         }
 
         public List<Insurance> findByIDs(List<int> ids)
         {
+            var query = $"SELECT [InsuranceId],[OfferName],[ContractTime] ,[Price] " +
+                  $",[InsuranceCompanyId],[DiscountPercent]FROM [dbo].[Insurance] where InsuranceId in ({ids})";
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = $"select * from [dbo].[Insurance] where InsuranceId in ({ids})";
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-            return (List<Insurance>)res;
+            var data = Connection.QueryMultiple(query, null, commandType: CommandType.Text);
+
+            return data.Read<Insurance>().ToList();
         }
 
         public Insurance save(Insurance E)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
+            var query = "";
             if (E.InsuranceCompanyId == 0)
             {
-                cmd.CommandText = $"INSERT INTO [dbo].[Insurance]([OfferName],[ContractTime],[Price],[InsuranceCompanyId],[DiscountPercent])" +
-                               $"VALUES({E.OfferName},{E.ContractTime},{E.Price},{E.InsuranceCompanyId},{E.DiscountPercent})" +
+                query = $"INSERT INTO [dbo].[Insurance]([OfferName],[ContractTime],[Price],[InsuranceCompanyId],[DiscountPercent])" +
+                               $"VALUES(N'{E.OfferName}',{E.ContractTime},{E.Price},{E.InsuranceCompanyId},{E.DiscountPercent})" +
                                $"SELECT * from [dbo].[Insurance] where InsuranceId = scope_identity()";
             }
             else
             {
-                cmd.CommandText = $"UPDATE [dbo].[Insurance]" +
-                                    $"SET [OfferName] = {E.OfferName} ,[ContractTime] = {E.ContractTime},[Price] = {E.Price},[InsuranceCompanyId] = {E.InsuranceCompanyId},[DiscountPercent] = {E.DiscountPercent}" +
+                query = $"UPDATE [dbo].[Insurance]" +
+                                    $"SET [OfferName] = N'{E.OfferName}' ,[ContractTime] = {E.ContractTime},[Price] = {E.Price},[InsuranceCompanyId] = {E.InsuranceCompanyId},[DiscountPercent] = {E.DiscountPercent}" +
                                     $"WHERE InsuranceId = {E.InsuranceId}" +
                                 $"SELECT * from [dbo].[Insurance] where InsuranceId = scope_identity()";
             }
-            cmd.Connection = Connection;
-            Connection.Open();
-            var res = cmd.ExecuteScalar();
-            Connection.Close();
-
-            return (Insurance)res;
+            var data = Connection.Query<Insurance>(query, null, commandType: CommandType.Text);
+            return data.SingleOrDefault();
         }
     }
 }

@@ -1,0 +1,98 @@
+﻿@model Azki.Data.WealthInsurance
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>WealthInsurance</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.InsuranceId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InsuranceId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WealthValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WealthValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProvinceName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProvinceName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CityName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WealthInsuranceTypeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WealthInsuranceTypeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Meterage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Meterage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BuildingAge)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BuildingAge)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RoofNumbers)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RoofNumbers)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WealthTypeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WealthTypeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ValuePerMeter)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ValuePerMeter)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.WealthInsuranceId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
